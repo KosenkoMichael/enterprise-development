@@ -21,10 +21,10 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore CarRentalService/CarRentalService.sln
+      run: dotnet restore
 
     - name: Build
-      run: dotnet build CarRentalService/CarRentalService.sln --no-restore --configuration Release
+      run: dotnet build --no-restore --configuration Release
 
     - name: Test
-      run: dotnet test CarRentalService/CarRentalService.sln --no-build --configuration Release
+      run: dotnet test --no-build --configuration Release
