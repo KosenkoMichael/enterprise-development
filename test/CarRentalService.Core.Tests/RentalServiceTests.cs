@@ -107,32 +107,42 @@ public class RentalServiceTests
     {
         var (_, _, _, customers, rentals) = GenerateTestData();
         var targetModel = "Camry";
+
         var result = rentals
             .Where(r => r.RentedVehicle.Generation.Model.Name == targetModel)
             .Select(r => r.Customer)
             .Distinct()
             .OrderBy(c => c.FullName)
             .ToList();
+
         Assert.NotNull(result);
         Assert.NotEmpty(result);
-        foreach (var customer in result)
-        {
-            var hasRentedTargetModel = rentals.Any(r =>
+
+        var checkCustomers =
+            from customer in result
+            let hasRentedTargetModel = rentals.Any(r =>
                 r.Customer.Id == customer.Id &&
-                r.RentedVehicle.Generation.Model.Name == targetModel);
-            Assert.True(hasRentedTargetModel, $"Клиент {customer.FullName} не арендовал {targetModel}");
+                r.RentedVehicle.Generation.Model.Name == targetModel)
+            select new { customer, hasRentedTargetModel };
+
+        foreach (var c in checkCustomers)
+        {
+            Assert.True(c.hasRentedTargetModel);
         }
+
         var sorted = result.OrderBy(c => c.FullName).ToList();
         Assert.Equal(sorted, result);
     }
+
     [Fact]
     public void GetVehiclesCurrentlyRented()
     {
         var (_, _, vehicles, _, rentals) = GenerateTestData();
         var now = DateTime.Now;
+
         var result = rentals
             .Where(r => r.RentStartTime <= now &&
-                       r.RentStartTime.AddHours(r.RentalDurationHours) > now)
+                        r.RentStartTime.AddHours(r.RentalDurationHours) > now)
             .Select(r => r.RentedVehicle)
             .Distinct()
             .ToList();
@@ -140,40 +150,53 @@ public class RentalServiceTests
         Assert.NotNull(result);
         Assert.NotEmpty(result);
 
-        foreach (var vehicle in result)
-        {
-            var isCurrentlyRented = rentals.Any(r =>
+        var checkVehicles =
+            from vehicle in result
+            let isCurrentlyRented = rentals.Any(r =>
                 r.RentedVehicle.Id == vehicle.Id &&
                 r.RentStartTime <= now &&
-                r.RentStartTime.AddHours(r.RentalDurationHours) > now);
+                r.RentStartTime.AddHours(r.RentalDurationHours) > now)
+            select new { vehicle, isCurrentlyRented };
 
-            Assert.True(isCurrentlyRented, $"Автомобиль {vehicle.LicensePlate} не в аренде");
+        foreach (var v in checkVehicles)
+        {
+            Assert.True(v.isCurrentlyRented);
         }
     }
+
     [Fact]
     public void GetTop5MostFrequentlyRentedVehicles()
     {
         var (_, _, vehicles, _, rentals) = GenerateTestData();
+
         var result = rentals
             .GroupBy(r => r.RentedVehicle)
             .Select(g => new { Vehicle = g.Key, RentalCount = g.Count() })
             .OrderByDescending(x => x.RentalCount)
             .Take(5)
             .ToList();
+
         Assert.NotNull(result);
         Assert.NotEmpty(result);
         Assert.True(result.Count <= 5);
-        for (var i = 0; i < result.Count - 1; i++)
+
+        var checkOrder =
+            from i in Enumerable.Range(0, result.Count - 1)
+            select new { Current = result[i], Next = result[i + 1] };
+
+        foreach (var pair in checkOrder)
         {
-            Assert.True(result[i].RentalCount >= result[i + 1].RentalCount,
-                $"Неправильная сортировка: {result[i].RentalCount} < {result[i + 1].RentalCount}");
+            Assert.True(pair.Current.RentalCount >= pair.Next.RentalCount);
         }
+
         Assert.True(result.First().RentalCount >= 5);
     }
+
     [Fact]
     public void GetRentalCountPerVehicle()
     {
         var (_, _, vehicles, _, rentals) = GenerateTestData();
+
         var result = vehicles
             .Select(vehicle => new
             {
@@ -181,20 +204,29 @@ public class RentalServiceTests
                 RentalCount = rentals.Count(r => r.RentedVehicle.Id == vehicle.Id)
             })
             .ToList();
+
         Assert.NotNull(result);
         Assert.Equal(vehicles.Count, result.Count);
-        foreach (var item in result)
+
+        var checkCounts =
+            from item in result
+            let actualCount = rentals.Count(r => r.RentedVehicle.Id == item.Vehicle.Id)
+            select new { item, actualCount };
+
+        foreach (var c in checkCounts)
         {
-            var actualCount = rentals.Count(r => r.RentedVehicle.Id == item.Vehicle.Id);
-            Assert.Equal(actualCount, item.RentalCount);
+            Assert.Equal(c.actualCount, c.item.RentalCount);
         }
+
         var distinctCounts = result.Select(x => x.RentalCount).Distinct().Count();
-        Assert.True(distinctCounts >= 2, "Должны быть автомобили с разной популярностью");
+        Assert.True(distinctCounts >= 2);
     }
+
     [Fact]
     public void GetTop5CustomersByRentalCost()
     {
         var (_, _, _, customers, rentals) = GenerateTestData();
+
         var result = rentals
             .GroupBy(r => r.Customer)
             .Select(g => new
@@ -205,20 +237,29 @@ public class RentalServiceTests
             .OrderByDescending(x => x.TotalCost)
             .Take(5)
             .ToList();
+
         Assert.NotNull(result);
         Assert.True(result.Count > 0);
-        for (var i = 0; i < result.Count - 1; i++)
-        {
-            Assert.True(result[i].TotalCost >= result[i + 1].TotalCost,
-                $"Неправильная сортировка: {result[i].TotalCost} < {result[i + 1].TotalCost}");
-        }
-        foreach (var item in result)
-        {
-            var actualCost = rentals
-                .Where(r => r.Customer.Id == item.Customer.Id)
-                .Sum(r => (decimal)r.RentalDurationHours * r.RentedVehicle.Generation.RentalPricePerHour);
 
-            Assert.Equal(actualCost, item.TotalCost);
+        var checkOrder =
+            from i in Enumerable.Range(0, result.Count - 1)
+            select new { Current = result[i], Next = result[i + 1] };
+
+        foreach (var pair in checkOrder)
+        {
+            Assert.True(pair.Current.TotalCost >= pair.Next.TotalCost);
+        }
+
+        var checkCosts =
+            from item in result
+            let actualCost = rentals
+                .Where(r => r.Customer.Id == item.Customer.Id)
+                .Sum(r => (decimal)r.RentalDurationHours * r.RentedVehicle.Generation.RentalPricePerHour)
+            select new { item, actualCost };
+
+        foreach (var c in checkCosts)
+        {
+            Assert.Equal(c.actualCost, c.item.TotalCost);
         }
     }
 }
