@@ -1,4 +1,6 @@
-﻿namespace CarRentalService.Core.Domain.Models;
+﻿using System.Drawing;
+
+namespace CarRentalService.Core.Domain.Models;
 /// <summary>
 /// Represents a vehicle in the car rental system.
 /// </summary>
@@ -19,5 +21,5 @@ public class Vehicle
     /// <summary>
     /// Color of the vehicle.
     /// </summary>
-    public required string Color { get; set; }
+    public required Color Color { get; set; }
 }

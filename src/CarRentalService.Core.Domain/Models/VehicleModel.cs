@@ -15,7 +15,7 @@ public class VehicleModel
     /// <summary>
     /// Drive type of the vehicle (e.g., "FWD", "RWD", "AWD").
     /// </summary>
-    public required string DriveType { get; set; }
+    public required DriveType DriveType { get; set; }
     /// <summary>
     /// Seat count of the vehicle.
     /// </summary>
@@ -23,9 +23,9 @@ public class VehicleModel
     /// <summary>
     /// Body type of the vehicle (e.g., "Sedan", "SUV").
     /// </summary>
-    public required string BodyType { get; set; }
+    public required BodyType BodyType { get; set; }
     /// <summary>
     /// Vehicle class (e.g., "Economy", "Luxury").
     /// </summary>
-    public required string Class { get; set; }
+    public required VehicleClass Class { get; set; }
 }

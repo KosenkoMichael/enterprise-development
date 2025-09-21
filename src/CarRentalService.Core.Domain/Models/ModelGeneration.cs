@@ -19,7 +19,7 @@ public class ModelGeneration
     /// <summary>
     /// Transmission type (e.g., Automatic, Manual).
     /// </summary>
-    public required string TransmissionType { get; set; }
+    public required TransmissionType TransmissionType { get; set; }
     /// <summary>
     /// Model associated with this generation.
     /// </summary>
