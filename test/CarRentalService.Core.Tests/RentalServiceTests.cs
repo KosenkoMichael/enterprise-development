@@ -135,11 +135,12 @@ public class RentalServiceTests : IClassFixture<TestDataFixture>
 
         var expected = (from r in _fixture.Rentals
                         group r by r.Customer into g
-                        orderby g.Sum(r => r.TotalCost) descending
+                        let total = g.Sum(x => x.TotalCost)
+                        orderby total descending
                         select new
                         {
                             Customer = g.Key,
-                            TotalCost = g.Sum(r => r.TotalCost)
+                            TotalCost = total
                         })
                       .Take(5)
                       .ToList();
