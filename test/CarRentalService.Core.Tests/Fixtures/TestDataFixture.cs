@@ -5,7 +5,7 @@ namespace CarRentalService.Core.Tests.Fixtures;
 /// <summary>
 /// Fixture for Unit tests
 /// </summary>
-public class TestDataFixture : IDisposable
+public class TestDataFixture
 {
     /// <summary>
     /// Test List of VehicleModels
@@ -34,12 +34,5 @@ public class TestDataFixture : IDisposable
     {
         var generator = new TestDataGenerator();
         (VehicleModels, ModelGenerations, Vehicles, Customers, Rentals) = generator.GenerateTestData();
-    }
-    /// <summary>
-    /// Resource disposing
-    /// </summary>
-    public void Dispose()
-    {
-        //It is not currently used, but for the sake of good programming practice let it be so.
     }
 }
