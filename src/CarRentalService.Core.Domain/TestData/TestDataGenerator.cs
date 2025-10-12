@@ -15,105 +15,80 @@ public class TestDataGenerator
     {
         var now = DateTime.Now;
 
+        // Vehicle Models
         var vehicleModels = new List<VehicleModel>
         {
-            new VehicleModel() { Name = "Camry", DriveType = Models.DriveType.FWD, SeatCount = 5, BodyType = BodyType.Sedan, Class = VehicleClass.Business },
-            new VehicleModel() { Name = "RAV4", DriveType = Models.DriveType.AWD, SeatCount = 5, BodyType = BodyType.SUV, Class = VehicleClass.Compact },
-            new VehicleModel() { Name = "Corolla", DriveType = Models.DriveType.FWD, SeatCount = 5, BodyType = BodyType.Sedan, Class = VehicleClass.Economy },
-            new VehicleModel() { Name = "Civic", DriveType = Models.DriveType.FWD, SeatCount = 5, BodyType = BodyType.Sedan, Class = VehicleClass.Economy },
-            new VehicleModel() { Name = "CR-V", DriveType = Models.DriveType.AWD, SeatCount = 5, BodyType = BodyType.SUV, Class = VehicleClass.Compact }
+            new() { Name = "Camry", DriveType = Models.DriveType.FWD, SeatCount = 5, BodyType = BodyType.Sedan, Class = VehicleClass.Business },
+            new() { Name = "RAV4", DriveType = Models.DriveType.AWD, SeatCount = 5, BodyType = BodyType.SUV, Class = VehicleClass.Compact },
+            new() { Name = "Corolla", DriveType = Models.DriveType.FWD, SeatCount = 5, BodyType = BodyType.Sedan, Class = VehicleClass.Economy },
+            new() { Name = "Civic", DriveType = Models.DriveType.FWD, SeatCount = 5, BodyType = BodyType.Sedan, Class = VehicleClass.Economy },
+            new() { Name = "CR-V", DriveType = Models.DriveType.AWD, SeatCount = 5, BodyType = BodyType.SUV, Class = VehicleClass.Compact },
+            new() { Name = "Accord", DriveType = Models.DriveType.FWD, SeatCount = 5, BodyType = BodyType.Sedan, Class = VehicleClass.Business },
+            new() { Name = "Highlander", DriveType = Models.DriveType.AWD, SeatCount = 7, BodyType = BodyType.SUV, Class = VehicleClass.Luxury },
+            new() { Name = "Mazda3", DriveType = Models.DriveType.FWD, SeatCount = 5, BodyType = BodyType.Hatchback, Class = VehicleClass.Compact },
+            new() { Name = "Altima", DriveType = Models.DriveType.FWD, SeatCount = 5, BodyType = BodyType.Sedan, Class = VehicleClass.Business },
+            new() { Name = "CX-5", DriveType = Models.DriveType.AWD, SeatCount = 5, BodyType = BodyType.SUV, Class = VehicleClass.Compact }
         };
 
-        var modelGenerations = new List<ModelGeneration>();
-        foreach (var model in vehicleModels)
+        // Model Generations
+        var modelGenerations = new List<ModelGeneration>
         {
-            for (var i = 0; i < 3; i++)
-            {
-                modelGenerations.Add(new ModelGeneration
-                {
-                    Year = 2018 + i,
-                    EngineVolume = 1.6 + i * 0.4,
-                    TransmissionType = i % 2 == 0 ? TransmissionType.Automatic : TransmissionType.Manual,
-                    Model = model,
-                    RentalPricePerHour = 40m + i * 10
-                });
-            }
-        }
+            new() { Model = vehicleModels[0], Year = 2018, EngineVolume = 1.6, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 40m },
+            new() { Model = vehicleModels[0], Year = 2019, EngineVolume = 2.0, TransmissionType = TransmissionType.Manual, RentalPricePerHour = 50m },
+            new() { Model = vehicleModels[1], Year = 2018, EngineVolume = 2.0, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 45m },
+            new() { Model = vehicleModels[1], Year = 2019, EngineVolume = 2.4, TransmissionType = TransmissionType.Manual, RentalPricePerHour = 55m },
+            new() { Model = vehicleModels[2], Year = 2018, EngineVolume = 1.6, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 35m },
+            new() { Model = vehicleModels[2], Year = 2019, EngineVolume = 2.0, TransmissionType = TransmissionType.Manual, RentalPricePerHour = 45m },
+            new() { Model = vehicleModels[3], Year = 2019, EngineVolume = 1.5, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 38m },
+            new() { Model = vehicleModels[4], Year = 2018, EngineVolume = 2.5, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 60m },
+            new() { Model = vehicleModels[5], Year = 2020, EngineVolume = 2.0, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 52m },
+            new() { Model = vehicleModels[6], Year = 2021, EngineVolume = 3.0, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 70m }
+        };
 
-        var vehicles = new List<Vehicle>();
-        var colors = new[] { Color.Black , Color.White, Color.Silver, Color.Red, Color.Blue };
-        var colorIndex = 0;
-        var plateNumber = 100;
-
-        foreach (var generation in modelGenerations)
+        // Vehicles
+        var vehicles = new List<Vehicle>
         {
-            for (var i = 0; i < 2; i++)
-            {
-                vehicles.Add(new Vehicle
-                {
-                    LicensePlate = $"A{plateNumber:000}BCRUS",
-                    Color = colors[colorIndex % colors.Length],
-                    Generation = generation
-                });
-                colorIndex++;
-            }
-        }
+            new() { Generation = modelGenerations[0], Color = Color.Black, LicensePlate = "A001BCRUS" },
+            new() { Generation = modelGenerations[1], Color = Color.White, LicensePlate = "A002BCRUS" },
+            new() { Generation = modelGenerations[2], Color = Color.Silver, LicensePlate = "A003BCRUS" },
+            new() { Generation = modelGenerations[3], Color = Color.Red, LicensePlate = "A004BCRUS" },
+            new() { Generation = modelGenerations[4], Color = Color.Blue, LicensePlate = "A005BCRUS" },
+            new() { Generation = modelGenerations[5], Color = Color.Black, LicensePlate = "A006BCRUS" },
+            new() { Generation = modelGenerations[6], Color = Color.White, LicensePlate = "A007BCRUS" },
+            new() { Generation = modelGenerations[7], Color = Color.Gray, LicensePlate = "A008BCRUS" },
+            new() { Generation = modelGenerations[8], Color = Color.Yellow, LicensePlate = "A009BCRUS" },
+            new() { Generation = modelGenerations[9], Color = Color.Green, LicensePlate = "A010BCRUS" }
+        };
 
-        var customers = new List<Customer>();
-        var firstNames = new[] { "John", "Michael", "Emma", "Sophia", "David", "Olivia" };
-        var lastNames = new[] { "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia" };
-
-        for (var i = 0; i < 10; i++)
+        // Customers
+        var customers = new List<Customer>
         {
-            customers.Add(new Customer
-            {
-                DriverLicenseNumber = $"77AB{100000 + i}",
-                FullName = $"{lastNames[i % lastNames.Length]} {firstNames[i % firstNames.Length]}",
-                DateOfBirth = new DateTime(1985, 1, 1).AddDays(i * 365)
-            });
-        }
+            new() { DriverLicenseNumber = "77AB100001", FullName = "Smith John", DateOfBirth = new DateTime(1985,1,1) },
+            new() { DriverLicenseNumber = "77AB100002", FullName = "Johnson Michael", DateOfBirth = new DateTime(1986,2,2) },
+            new() { DriverLicenseNumber = "77AB100003", FullName = "Williams Emma", DateOfBirth = new DateTime(1987,3,3) },
+            new() { DriverLicenseNumber = "77AB100004", FullName = "Brown Sophia", DateOfBirth = new DateTime(1988,4,4) },
+            new() { DriverLicenseNumber = "77AB100005", FullName = "Jones David", DateOfBirth = new DateTime(1989,5,5) },
+            new() { DriverLicenseNumber = "77AB100006", FullName = "Garcia Olivia", DateOfBirth = new DateTime(1990,6,6) },
+            new() { DriverLicenseNumber = "77AB100007", FullName = "Martinez Liam", DateOfBirth = new DateTime(1991,7,7) },
+            new() { DriverLicenseNumber = "77AB100008", FullName = "Davis Ava", DateOfBirth = new DateTime(1992,8,8) },
+            new() { DriverLicenseNumber = "77AB100009", FullName = "Lopez Noah", DateOfBirth = new DateTime(1993,9,9) },
+            new() { DriverLicenseNumber = "77AB100010", FullName = "Wilson Mia", DateOfBirth = new DateTime(1994,10,10) }
+        };
 
-        var rentals = new List<Rental>();
-        var currentlyRentedVehicles = vehicles.Take(3).ToList();
-
-        for (var i = 0; i < currentlyRentedVehicles.Count; i++)
+        // Rentals
+        var rentals = new List<Rental>
         {
-            rentals.Add(new Rental
-            {
-                RentedVehicle = currentlyRentedVehicles[i],
-                Customer = customers[i % customers.Count],
-                RentStartTime = now.AddHours(-2),
-                RentalDurationHours = 8
-            });
-        }
-
-        var popularVehicle = vehicles[5];
-        for (var i = 0; i < 5; i++)
-        {
-            rentals.Add(new Rental
-            {
-                RentedVehicle = popularVehicle,
-                Customer = customers[(i + 1) % customers.Count],
-                RentStartTime = now.AddDays(-i * 10),
-                RentalDurationHours = 12 + i * 6
-            });
-        }
-
-        for (var i = 0; i < 15; i++)
-        {
-            var vehicleIndex = (i + 7) % vehicles.Count;
-            var vehicle = vehicles[vehicleIndex];
-
-            if (currentlyRentedVehicles.Contains(vehicle)) continue;
-
-            rentals.Add(new Rental
-            {
-                RentedVehicle = vehicle,
-                Customer = customers[(i + 2) % customers.Count],
-                RentStartTime = now.AddDays(-(i + 1) * 7),
-                RentalDurationHours = 24 + i * 3
-            });
-        }
+            new() { RentedVehicle = vehicles[0], Customer = customers[0], RentStartTime = now.AddHours(-2), RentalDurationHours = 8 },
+            new() { RentedVehicle = vehicles[1], Customer = customers[1], RentStartTime = now.AddHours(-3), RentalDurationHours = 6 },
+            new() { RentedVehicle = vehicles[2], Customer = customers[2], RentStartTime = now.AddDays(-1), RentalDurationHours = 10 },
+            new() { RentedVehicle = vehicles[3], Customer = customers[3], RentStartTime = now.AddDays(-2), RentalDurationHours = 12 },
+            new() { RentedVehicle = vehicles[4], Customer = customers[4], RentStartTime = now.AddDays(-3), RentalDurationHours = 14 },
+            new() { RentedVehicle = vehicles[5], Customer = customers[5], RentStartTime = now.AddDays(-4), RentalDurationHours = 9 },
+            new() { RentedVehicle = vehicles[6], Customer = customers[6], RentStartTime = now.AddDays(-5), RentalDurationHours = 11 },
+            new() { RentedVehicle = vehicles[7], Customer = customers[7], RentStartTime = now.AddDays(-6), RentalDurationHours = 7 },
+            new() { RentedVehicle = vehicles[8], Customer = customers[8], RentStartTime = now.AddDays(-7), RentalDurationHours = 13 },
+            new() { RentedVehicle = vehicles[9], Customer = customers[9], RentStartTime = now.AddDays(-8), RentalDurationHours = 15 }
+        };
 
         return (vehicleModels, modelGenerations, vehicles, customers, rentals);
     }
