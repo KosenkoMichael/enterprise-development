@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CarRentalService.Infrastructure.InMemory\CarRentalService.Infrastructure.InMemory.csproj" />
+    <ProjectReference Include="..\..\src\CarRentalService.Infrastructure.InMemory\CarRentalService.Infrastructure.InMemory.csproj" />
   </ItemGroup>
 
 </Project>

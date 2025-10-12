@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CarRentalService.Application\CarRentalService.Application.csproj" />
-    <ProjectReference Include="..\..\CarRentalService.WebApplication\CarRentalService.WebApplication.csproj" />
+    <ProjectReference Include="..\..\src\CarRentalService.Application\CarRentalService.Application.csproj" />
+    <ProjectReference Include="..\..\src\CarRentalService.WebApplication\CarRentalService.WebApplication.csproj" />
     <ProjectReference Include="..\..\src\CarRentalService.Core.Domain\CarRentalService.Core.Domain.csproj" />
   </ItemGroup>
 
