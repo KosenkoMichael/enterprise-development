@@ -32,15 +32,11 @@ public class InMemoryCustomerRepository: IRepository<Customer>
         return true;
     }
     /// <inheritdoc/>
-    public List<Customer> Read()
-    {
-        return [.. _customers];
-    }
+    public List<Customer> Read() =>
+        [.. _customers];
     /// <inheritdoc/>
-    public Customer? Read(Guid id)
-    {
-        return _customers.FirstOrDefault(c => c.Id == id);
-    }
+    public Customer? Read(Guid id) =>
+        _customers.FirstOrDefault(c => c.Id == id);
     /// <inheritdoc/>
     public Customer? Update(Guid id, Customer entity)
     {

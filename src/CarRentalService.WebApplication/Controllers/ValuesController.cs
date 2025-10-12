@@ -20,10 +20,8 @@ public class CustomerController(CustomerService service): ControllerBase
     /// <returns>List of customers</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public List<Customer> GetAll()
-    {
-        return service.GetCustomers();
-    }
+    public List<Customer> GetAll() =>
+        service.GetCustomers();
     /// <summary>
     /// Gets a customer by ID
     /// </summary>
@@ -32,10 +30,8 @@ public class CustomerController(CustomerService service): ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public Customer? GetById(Guid id)
-    {
-        return service.GetCustomer(id);
-    }
+    public Customer? GetById(Guid id) =>
+        service.GetCustomer(id);
     /// <summary>
     /// Creates a new customer
     /// </summary>
@@ -43,10 +39,8 @@ public class CustomerController(CustomerService service): ControllerBase
     /// <returns></returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public Guid Create([FromBody] CustomerDto customerDto)
-    {
-        return service.CreateStudent(customerDto);
-    }
+    public Guid Create([FromBody] CustomerDto customerDto) =>
+        service.CreateCustomer(customerDto);
     /// <summary>
     /// Updates an existing customer
     /// </summary>
@@ -56,10 +50,8 @@ public class CustomerController(CustomerService service): ControllerBase
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public Customer? Update(Guid id, [FromBody] CustomerDto customerDto)
-    {
-        return service.UpdateCustomer(id, customerDto);
-    }
+    public Customer? Update(Guid id, [FromBody] CustomerDto customerDto) =>
+        service.UpdateCustomer(id, customerDto);
     /// <summary>
     /// Deletes a customer by ID
     /// </summary>
@@ -68,8 +60,6 @@ public class CustomerController(CustomerService service): ControllerBase
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public bool Delete(Guid id)
-    {
-        return service.DeleteCustomer(id);
-    }
+    public bool Delete(Guid id) =>
+        service.DeleteCustomer(id);
 }

@@ -23,44 +23,34 @@ public class CustomerService(IRepository<Customer> repository)
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public Guid CreateStudent(CustomerDto entity)
-    {
-        return repository.Create(MapDto(entity));
-    }
+    public Guid CreateCustomer(CustomerDto entity) => 
+        repository.Create(MapDto(entity));
     /// <summary>
     /// Retrieves all customers
     /// </summary>
     /// <returns></returns>
-    public List<Customer> GetCustomers()
-    {
-        return repository.Read();
-    }
+    public List<Customer> GetCustomers() =>
+        repository.Read();
     /// <summary>
     /// Retrieves a customer by ID
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public Customer? GetCustomer(Guid id)
-    {
-        return repository.Read(id);
-    }
+    public Customer? GetCustomer(Guid id) =>
+        repository.Read(id);
     /// <summary>
     /// Updates an existing customer
     /// </summary>
     /// <param name="id"></param>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public Customer? UpdateCustomer(Guid id, CustomerDto entity)
-    {
-        return repository.Update(id, MapDto(entity));
-    }
+    public Customer? UpdateCustomer(Guid id, CustomerDto entity) =>
+        repository.Update(id, MapDto(entity));
     /// <summary>
     /// Deletes a customer by ID
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public bool DeleteCustomer(Guid id)
-    {
-        return repository.Delete(id);
-    }
+    public bool DeleteCustomer(Guid id) =>
+        repository.Delete(id);
 }
