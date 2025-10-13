@@ -33,6 +33,10 @@ builder.Services.AddSingleton<VehicleModelSeeder>();
 builder.Services.AddSingleton<IRepository<VehicleModel>, InMemoryVehicleModelRepository>();
 builder.Services.AddTransient<VehicleModelService>();
 
+builder.Services.AddSingleton<ModelGenerationSeeder>();
+builder.Services.AddSingleton<IRepository<ModelGeneration>, InMemoryModelGenerationRepository>();
+builder.Services.AddTransient<ModelGenerationService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

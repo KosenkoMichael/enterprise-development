@@ -9,6 +9,10 @@ namespace CarRentalService.Infrastructure.InMemory.Repositories;
 public class InMemoryVehicleModelRepository: IRepository<VehicleModel>
 {
     private readonly List<VehicleModel> _vehicleModels = new();
+    /// <summary>
+    /// Initializes a new instance of the vehicle model repository.
+    /// </summary>
+    /// <param name="seeder">Seeder for initial data</param>
     public InMemoryVehicleModelRepository(VehicleModelSeeder? seeder)
     {
         if (seeder == null) return;

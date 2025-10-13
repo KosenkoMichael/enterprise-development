@@ -9,6 +9,10 @@ namespace CarRentalService.Infrastructure.InMemory.Repositories;
 public class InMemoryCustomerRepository: IRepository<Customer>
 {
     private readonly List<Customer> _customers = new();
+    /// <summary>
+    /// Initializes a new instance of the customer repository.
+    /// </summary>
+    /// <param name="seeder">Seeder for initial data</param>
     public InMemoryCustomerRepository(CustomerSeeder? seeder)
     {
         if (seeder == null) return;
