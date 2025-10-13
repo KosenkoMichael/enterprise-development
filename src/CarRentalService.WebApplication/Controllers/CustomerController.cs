@@ -1,7 +1,6 @@
 ﻿using CarRentalService.Application.Dto;
 using CarRentalService.Application.Services;
 using CarRentalService.Core.Domain.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarRentalService.WebApplication.Controllers;

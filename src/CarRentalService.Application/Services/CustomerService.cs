@@ -10,11 +10,6 @@ namespace CarRentalService.Application.Services;
 /// <param name="repository">The repository used for customer data operations.</param>
 public class CustomerService(IRepository<Customer> repository)
 {
-    /// <summary>
-    /// Maps a <see cref="CustomerDto"/> to a <see cref="Customer"/> domain entity.
-    /// </summary>
-    /// <param name="entity">The data transfer object to map.</param>
-    /// <returns>A new <see cref="Customer"/> instance with data from the DTO.</returns>
     private static Customer MapDto(CustomerDto entity)
     {
         return new Customer

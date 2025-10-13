@@ -24,6 +24,10 @@ builder.Services.AddSingleton<CustomerSeeder>();
 builder.Services.AddSingleton<IRepository<Customer>, InMemoryCustomerRepository>();
 builder.Services.AddTransient<CustomerService>();
 
+builder.Services.AddSingleton<VehicleModelSeeder>();
+builder.Services.AddSingleton<IRepository<VehicleModel>, InMemoryVehicleModelRepository>();
+builder.Services.AddTransient<VehicleModelService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
