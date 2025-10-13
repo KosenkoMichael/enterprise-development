@@ -2,16 +2,17 @@
 using CarRentalService.Core.Domain.TestData;
 
 namespace CarRentalService.Infrastructure.InMemory.Seeders;
+
 /// <summary>
-/// Seeder for customers
+/// Provides pre-generated customer data for testing.
 /// </summary>
 public class CustomerSeeder
 {
     private readonly TestDataGenerator _generator = new();
+
     /// <summary>
-    /// Pre-generated list of customers
+    /// Returns a list of pre-generated customers.
     /// </summary>
-    /// <returns></returns>
     public List<Customer> GetItems()
     {
         var (_, _, _, customers, _) = _generator.GenerateTestData();

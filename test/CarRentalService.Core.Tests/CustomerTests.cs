@@ -3,13 +3,14 @@ using CarRentalService.Core.Tests.Fixtures;
 using CarRentalService.Application.Services;
 
 namespace CarRentalService.Core.Tests;
+
 /// <summary>
-/// Unit tests for CarRentalServise's modules
+/// Unit tests for customer management functionality.
 /// </summary>
 public class CustomerTests(CustomerRepositoryFixture fixture) : IClassFixture<CustomerRepositoryFixture>
 {
     /// <summary>
-    /// Test to find a customer by FullName and verify their DriverLicenseNumber
+    /// Finds customer by full name and verifies driver license number.
     /// </summary>
     [Fact(DisplayName = "Should find customer by FullName and verify DriverLicenseNumber")]
     public void Test_FindCustomerByFullNameAndCheckLicense()

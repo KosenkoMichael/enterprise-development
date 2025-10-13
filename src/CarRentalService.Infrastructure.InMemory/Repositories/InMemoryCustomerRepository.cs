@@ -4,7 +4,7 @@ using CarRentalService.Infrastructure.InMemory.Seeders;
 
 namespace CarRentalService.Infrastructure.InMemory.Repositories;
 /// <summary>
-/// In memory implementation of the customer repository
+/// In-memory implementation of the customer repository
 /// </summary>
 public class InMemoryCustomerRepository: IRepository<Customer>
 {
