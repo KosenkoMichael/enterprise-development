@@ -1,14 +1,19 @@
 using CarRentalService.Application.Services;
 using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
-using CarRentalService.Infrastructure.InMemory.Repositories;
-using CarRentalService.Infrastructure.InMemory.Seeders;
+using CarRentalService.Infrastructure.Repositories;
+using CarRentalService.WebApplication;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -25,17 +30,20 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
-builder.Services.AddSingleton<CustomerSeeder>();
-builder.Services.AddSingleton<IRepository<Customer>, InMemoryCustomerRepository>();
-builder.Services.AddTransient<CustomerService>();
+BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
-builder.Services.AddSingleton<VehicleModelSeeder>();
-builder.Services.AddSingleton<IRepository<VehicleModel>, InMemoryVehicleModelRepository>();
-builder.Services.AddTransient<VehicleModelService>();
+builder.AddMongoDBClient("car-rental");
 
-builder.Services.AddSingleton<ModelGenerationSeeder>();
-builder.Services.AddSingleton<IRepository<ModelGeneration>, InMemoryModelGenerationRepository>();
-builder.Services.AddTransient<ModelGenerationService>();
+builder.Services.AddHostedService<DBSeeder>();
+
+builder.Services.AddScoped<IRepository<Customer>, CustomerRepository>();
+builder.Services.AddScoped<CustomerService>();
+
+builder.Services.AddScoped<IRepository<VehicleModel>, VehicleModelRepository>();
+builder.Services.AddScoped<VehicleModelService>();
+
+builder.Services.AddScoped<IRepository<ModelGeneration>, ModelGenerationRepository>();
+builder.Services.AddScoped<ModelGenerationService>();
 
 var app = builder.Build();
 

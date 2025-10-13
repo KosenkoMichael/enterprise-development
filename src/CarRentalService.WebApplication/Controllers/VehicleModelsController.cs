@@ -11,15 +11,15 @@ namespace CarRentalService.WebApplication.Controllers;
 /// <param name="service">Vehicle model service instance</param>
 [Route("api/[controller]")]
 [ApiController]
-public class VehicleModelController(VehicleModelService service) : ControllerBase
+public class VehicleModelsController(VehicleModelService service) : ControllerBase
 {
     /// <summary>
     /// Retrieves all vehicle models.
     /// </summary>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public List<VehicleModel> GetAll() =>
-        service.GetVehicleModels();
+    public async Task<List<VehicleModel>> GetAll() =>
+        await service.GetVehicleModels();
 
     /// <summary>
     /// Retrieves a vehicle model by ID.
@@ -28,8 +28,8 @@ public class VehicleModelController(VehicleModelService service) : ControllerBas
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public VehicleModel? GetById(Guid id) =>
-        service.GetVehicleModel(id);
+    public async Task<VehicleModel?> GetById(Guid id) =>
+        await service.GetVehicleModel(id);
 
     /// <summary>
     /// Creates a new vehicle model.
@@ -37,8 +37,8 @@ public class VehicleModelController(VehicleModelService service) : ControllerBas
     /// <param name="vehicleModelDto">Vehicle model data</param>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public Guid Create([FromBody] VehicleModelDto vehicleModelDto) =>
-        service.CreateVehicleModel(vehicleModelDto);
+    public async Task<Guid> Create([FromBody] VehicleModelDto vehicleModelDto) =>
+        await service.CreateVehicleModel(vehicleModelDto);
 
     /// <summary>
     /// Updates an existing vehicle model.
@@ -48,8 +48,8 @@ public class VehicleModelController(VehicleModelService service) : ControllerBas
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public VehicleModel? Update(Guid id, [FromBody] VehicleModelDto vehicleModelDto) =>
-        service.UpdateVehicleModel(id, vehicleModelDto);
+    public async Task<VehicleModel?> Update(Guid id, [FromBody] VehicleModelDto vehicleModelDto) =>
+        await service.UpdateVehicleModel(id, vehicleModelDto);
 
     /// <summary>
     /// Deletes a vehicle model by ID.
@@ -58,6 +58,6 @@ public class VehicleModelController(VehicleModelService service) : ControllerBas
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public bool Delete(Guid id) =>
-        service.DeleteVehicleModel(id);
+    public async Task<bool> Delete(Guid id) =>
+        await service.DeleteVehicleModel(id);
 }

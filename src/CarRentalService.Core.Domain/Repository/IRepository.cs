@@ -13,7 +13,7 @@ public interface IRepository<T> where T : class
     /// <returns>
     /// The unique identifier (<see cref="Guid"/>) assigned to the created entity.
     /// </returns>
-    public Guid Create(T entity);
+    public Task<Guid> CreateAsync(T entity);
 
     /// <summary>
     /// Retrieves all entities from the repository.
@@ -21,7 +21,7 @@ public interface IRepository<T> where T : class
     /// <returns>
     /// A <see cref="List{T}"/> containing all entities of type <typeparamref name="T"/>.
     /// </returns>
-    public List<T> Read();
+    public Task<List<T>> ReadAllAsync();
 
     /// <summary>
     /// Retrieves a single entity by its unique identifier.
@@ -30,7 +30,7 @@ public interface IRepository<T> where T : class
     /// <returns>
     /// The entity with the specified <paramref name="id"/>, or <see langword="null"/> if not found.
     /// </returns>
-    public T? Read(Guid id);
+    public Task<T?> ReadAsync(Guid id);
 
     /// <summary>
     /// Updates an existing entity in the repository.
@@ -40,7 +40,7 @@ public interface IRepository<T> where T : class
     /// <returns>
     /// The updated entity, or <see langword="null"/> if the entity was not found.
     /// </returns>
-    public T? Update(Guid id, T entity);
+    public Task<T?> UpdateAsync(Guid id, T entity);
 
     /// <summary>
     /// Deletes an entity from the repository by its unique identifier.
@@ -49,5 +49,5 @@ public interface IRepository<T> where T : class
     /// <returns>
     /// <see langword="true"/> if the entity was successfully deleted; otherwise, <see langword="false"/>.
     /// </returns>
-    public bool Delete(Guid id);
+    public Task<bool> DeleteAsync(Guid id);
 }

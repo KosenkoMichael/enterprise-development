@@ -27,23 +27,23 @@ public class VehicleModelService(IRepository<VehicleModel> repository)
     /// </summary>
     /// <param name="entity">Vehicle model data to create</param>
     /// <returns>Unique identifier of created vehicle model</returns>
-    public Guid CreateVehicleModel(VehicleModelDto entity) =>
-        repository.Create(MapDto(entity));
+    public async Task<Guid> CreateVehicleModel(VehicleModelDto entity) =>
+        await repository.CreateAsync(MapDto(entity));
 
     /// <summary>
     /// Retrieves all vehicle models.
     /// </summary>
     /// <returns>List of all vehicle models</returns>
-    public List<VehicleModel> GetVehicleModels() =>
-        repository.Read();
+    public async Task<List<VehicleModel>> GetVehicleModels() =>
+        await repository.ReadAllAsync();
 
     /// <summary>
     /// Retrieves a specific vehicle model by ID.
     /// </summary>
     /// <param name="id">Vehicle model identifier</param>
     /// <returns>Vehicle model if found; otherwise null</returns>
-    public VehicleModel? GetVehicleModel(Guid id) =>
-        repository.Read(id);
+    public async Task<VehicleModel?> GetVehicleModel(Guid id) =>
+        await repository.ReadAsync(id);
 
     /// <summary>
     /// Updates an existing vehicle model.
@@ -51,14 +51,14 @@ public class VehicleModelService(IRepository<VehicleModel> repository)
     /// <param name="id">Vehicle model identifier</param>
     /// <param name="entity">Updated vehicle model data</param>
     /// <returns>Updated vehicle model if found; otherwise null</returns>
-    public VehicleModel? UpdateVehicleModel(Guid id, VehicleModelDto entity) =>
-        repository.Update(id, MapDto(entity));
+    public async Task<VehicleModel?> UpdateVehicleModel(Guid id, VehicleModelDto entity) =>
+        await repository.UpdateAsync(id, MapDto(entity));
 
     /// <summary>
     /// Deletes a vehicle model by ID.
     /// </summary>
     /// <param name="id">Vehicle model identifier</param>
     /// <returns>True if deleted successfully; otherwise false</returns>
-    public bool DeleteVehicleModel(Guid id) =>
-        repository.Delete(id);
+    public async Task<bool> DeleteVehicleModel(Guid id) =>
+        await repository.DeleteAsync(id);
 }

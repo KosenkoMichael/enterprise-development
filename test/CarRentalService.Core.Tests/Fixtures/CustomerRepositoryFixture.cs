@@ -1,7 +1,4 @@
 ﻿using CarRentalService.Application.Services;
-using CarRentalService.Infrastructure.InMemory.Repositories;
-using CarRentalService.Infrastructure.InMemory.Seeders;
-
 namespace CarRentalService.Core.Tests.Fixtures;
 
 /// <summary>

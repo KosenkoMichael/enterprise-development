@@ -21,9 +21,9 @@ public class ModelGeneration
     /// </summary>
     public required TransmissionType TransmissionType { get; set; }
     /// <summary>
-    /// Model associated with this generation.
+    /// Vehicle model Id
     /// </summary>
-    public required VehicleModel Model { get; set; }
+    public required Guid VehicleModelId { get; set; }
     /// <summary>
     /// Cost to rent the vehicle per hour.
     /// </summary>

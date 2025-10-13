@@ -47,16 +47,16 @@ public class TestDataGenerator
         // Model Generations
         var modelGenerations = new List<ModelGeneration>
         {
-            new() { Model = vehicleModels[0], Year = 2018, EngineVolume = 1.6, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 40m },
-            new() { Model = vehicleModels[0], Year = 2019, EngineVolume = 2.0, TransmissionType = TransmissionType.Manual, RentalPricePerHour = 50m },
-            new() { Model = vehicleModels[1], Year = 2018, EngineVolume = 2.0, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 45m },
-            new() { Model = vehicleModels[1], Year = 2019, EngineVolume = 2.4, TransmissionType = TransmissionType.Manual, RentalPricePerHour = 55m },
-            new() { Model = vehicleModels[2], Year = 2018, EngineVolume = 1.6, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 35m },
-            new() { Model = vehicleModels[2], Year = 2019, EngineVolume = 2.0, TransmissionType = TransmissionType.Manual, RentalPricePerHour = 45m },
-            new() { Model = vehicleModels[3], Year = 2019, EngineVolume = 1.5, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 38m },
-            new() { Model = vehicleModels[4], Year = 2018, EngineVolume = 2.5, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 60m },
-            new() { Model = vehicleModels[5], Year = 2020, EngineVolume = 2.0, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 52m },
-            new() { Model = vehicleModels[6], Year = 2021, EngineVolume = 3.0, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 70m }
+            new() { VehicleModelId = vehicleModels[0].Id, Year = 2018, EngineVolume = 1.6, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 40m },
+            new() { VehicleModelId = vehicleModels[0].Id, Year = 2019, EngineVolume = 2.0, TransmissionType = TransmissionType.Manual, RentalPricePerHour = 50m },
+            new() { VehicleModelId = vehicleModels[1].Id, Year = 2018, EngineVolume = 2.0, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 45m },
+            new() { VehicleModelId = vehicleModels[1].Id, Year = 2019, EngineVolume = 2.4, TransmissionType = TransmissionType.Manual, RentalPricePerHour = 55m },
+            new() { VehicleModelId = vehicleModels[2].Id, Year = 2018, EngineVolume = 1.6, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 35m },
+            new() { VehicleModelId = vehicleModels[2].Id, Year = 2019, EngineVolume = 2.0, TransmissionType = TransmissionType.Manual, RentalPricePerHour = 45m },
+            new() { VehicleModelId = vehicleModels[3].Id, Year = 2019, EngineVolume = 1.5, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 38m },
+            new() { VehicleModelId = vehicleModels[4].Id, Year = 2018, EngineVolume = 2.5, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 60m },
+            new() { VehicleModelId = vehicleModels[5].Id, Year = 2020, EngineVolume = 2.0, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 52m },
+            new() { VehicleModelId = vehicleModels[6].Id, Year = 2021, EngineVolume = 3.0, TransmissionType = TransmissionType.Automatic, RentalPricePerHour = 70m }
         };
 
         // Vehicles
