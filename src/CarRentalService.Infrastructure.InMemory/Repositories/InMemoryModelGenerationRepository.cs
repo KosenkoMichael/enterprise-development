@@ -15,7 +15,7 @@ public class InMemoryModelGenerationRepository : IRepository<ModelGeneration>
     /// Initializes a new instance of the model generation repository.
     /// </summary>
     /// <param name="seeder">Seeder for initial data</param>
-    public InMemoryModelGenerationRepository(ModelGenerationSeeder? seeder)
+    public InMemoryModelGenerationRepository(ModelGenerationSeeder? seeder = null)
     {
         if (seeder == null) return;
         _modelGenerations = seeder.GetItems();

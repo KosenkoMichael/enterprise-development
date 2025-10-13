@@ -13,7 +13,7 @@ public class InMemoryVehicleModelRepository: IRepository<VehicleModel>
     /// Initializes a new instance of the vehicle model repository.
     /// </summary>
     /// <param name="seeder">Seeder for initial data</param>
-    public InMemoryVehicleModelRepository(VehicleModelSeeder? seeder)
+    public InMemoryVehicleModelRepository(VehicleModelSeeder? seeder = null)
     {
         if (seeder == null) return;
         _vehicleModels = seeder.GetItems();

@@ -13,7 +13,7 @@ public class InMemoryCustomerRepository: IRepository<Customer>
     /// Initializes a new instance of the customer repository.
     /// </summary>
     /// <param name="seeder">Seeder for initial data</param>
-    public InMemoryCustomerRepository(CustomerSeeder? seeder)
+    public InMemoryCustomerRepository(CustomerSeeder? seeder = null)
     {
         if (seeder == null) return;
         _customers = seeder.GetItems();
