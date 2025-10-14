@@ -51,6 +51,8 @@ builder.Services.AddScoped<VehicleService>();
 builder.Services.AddScoped<IRepository<Rental>, RentalRepository>();
 builder.Services.AddScoped<RentalService>();
 
+builder.Services.AddScoped<AnalyticsService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
