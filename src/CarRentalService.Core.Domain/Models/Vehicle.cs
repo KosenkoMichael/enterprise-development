@@ -21,5 +21,5 @@ public class Vehicle
     /// <summary>
     /// Color of the vehicle.
     /// </summary>
-    public required Color Color { get; set; }
+    public required string Color { get; set; }
 }

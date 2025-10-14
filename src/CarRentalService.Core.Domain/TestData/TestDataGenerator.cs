@@ -62,16 +62,16 @@ public class TestDataGenerator
         // Vehicles
         var vehicles = new List<Vehicle>
         {
-            new() { ModelGenerationId = modelGenerations[0].Id, Color = Color.Black, LicensePlate = "A001BCRUS" },
-            new() { ModelGenerationId = modelGenerations[1].Id, Color = Color.White, LicensePlate = "A002BCRUS" },
-            new() { ModelGenerationId = modelGenerations[2].Id, Color = Color.Silver, LicensePlate = "A003BCRUS" },
-            new() { ModelGenerationId = modelGenerations[3].Id, Color = Color.Red, LicensePlate = "A004BCRUS" },
-            new() { ModelGenerationId = modelGenerations[4].Id, Color = Color.Blue, LicensePlate = "A005BCRUS" },
-            new() { ModelGenerationId = modelGenerations[5].Id, Color = Color.Black, LicensePlate = "A006BCRUS" },
-            new() { ModelGenerationId = modelGenerations[6].Id, Color = Color.White, LicensePlate = "A007BCRUS" },
-            new() { ModelGenerationId = modelGenerations[7].Id, Color = Color.Gray, LicensePlate = "A008BCRUS" },
-            new() { ModelGenerationId = modelGenerations[8].Id, Color = Color.Yellow, LicensePlate = "A009BCRUS" },
-            new() { ModelGenerationId = modelGenerations[9].Id, Color = Color.Green, LicensePlate = "A010BCRUS" }
+            new() { ModelGenerationId = modelGenerations[0].Id, Color = "Black", LicensePlate = "A001BCRUS" },
+            new() { ModelGenerationId = modelGenerations[1].Id, Color = "White", LicensePlate = "A002BCRUS" },
+            new() { ModelGenerationId = modelGenerations[2].Id, Color = "Silver", LicensePlate = "A003BCRUS" },
+            new() { ModelGenerationId = modelGenerations[3].Id, Color = "Red", LicensePlate = "A004BCRUS" },
+            new() { ModelGenerationId = modelGenerations[4].Id, Color = "Blue", LicensePlate = "A005BCRUS" },
+            new() { ModelGenerationId = modelGenerations[5].Id, Color = "Black", LicensePlate = "A006BCRUS" },
+            new() { ModelGenerationId = modelGenerations[6].Id, Color = "White", LicensePlate = "A007BCRUS" },
+            new() { ModelGenerationId = modelGenerations[7].Id, Color = "Gray", LicensePlate = "A008BCRUS" },
+            new() { ModelGenerationId = modelGenerations[8].Id, Color = "Yellow", LicensePlate = "A009BCRUS" },
+            new() { ModelGenerationId = modelGenerations[9].Id, Color = "Green", LicensePlate = "A010BCRUS" }
         };
 
         // Customers
