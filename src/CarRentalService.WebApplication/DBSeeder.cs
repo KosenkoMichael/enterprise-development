@@ -25,7 +25,7 @@ public class DBSeeder : IHostedService
     /// <inheritdoc/>
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        var collections = (await (await _database.ListCollectionsAsync(cancellationToken: cancellationToken)).ToListAsync()).Select(x => x["name"].AsString).ToHashSet();
+        var collections = (await (await _database.ListCollectionsAsync(cancellationToken: cancellationToken)).ToListAsync(cancellationToken: cancellationToken)).Select(x => x["name"].AsString).ToHashSet();
 
         var generator = new TestDataGenerator();
         var (vehicleModels, modelGenerations, vehicles, customers, rentals) = generator.GenerateTestData();

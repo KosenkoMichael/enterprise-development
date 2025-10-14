@@ -52,7 +52,7 @@ public class AnalyticsService(
             .Select(r => r.VehicleId)
             .Distinct();
 
-        return vehicles.Where(v => rentedVehicleIds.Contains(v.Id)).ToList();
+        return [.. vehicles.Where(v => rentedVehicleIds.Contains(v.Id))];
     }
 
     /// <summary>
