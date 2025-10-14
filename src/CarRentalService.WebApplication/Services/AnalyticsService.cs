@@ -1,7 +1,7 @@
 ﻿using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
 
-namespace CarRentalService.Application.Services;
+namespace CarRentalService.WebApplication.Services;
 
 /// <summary>
 /// Service providing advanced analytics for rentals, vehicles, and customers.

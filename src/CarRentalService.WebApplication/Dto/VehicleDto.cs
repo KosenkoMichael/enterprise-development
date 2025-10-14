@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace CarRentalService.Application.Dto;
+namespace CarRentalService.WebApplication.Dto;
 
 /// <summary>
 /// Represents a vehicle in the car rental system.

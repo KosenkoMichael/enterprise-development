@@ -1,8 +1,8 @@
-﻿using CarRentalService.Application.Dto;
+﻿using CarRentalService.WebApplication.Dto;
 using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
 
-namespace CarRentalService.Application.Services;
+namespace CarRentalService.WebApplication.Services;
 
 /// <summary>
 /// Provides operations for managing vehicle model generations in the car rental system.
@@ -14,7 +14,7 @@ public class ModelGenerationService(
     IRepository<VehicleModel> vehicleModelRepository
     )
 {
-    private ModelGeneration MapDto(ModelGenerationDto entity)
+    private static ModelGeneration MapDto(ModelGenerationDto entity)
     {
         return new ModelGeneration
         {

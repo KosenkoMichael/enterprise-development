@@ -1,9 +1,9 @@
-﻿using CarRentalService.Application.Dto;
+﻿using CarRentalService.WebApplication.Dto;
 using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
 using CarRentalService.Infrastructure.Repositories;
 
-namespace CarRentalService.Application.Services;
+namespace CarRentalService.WebApplication.Services;
 
 /// <summary>
 /// Provides operations for managing rentals in the car rental system.

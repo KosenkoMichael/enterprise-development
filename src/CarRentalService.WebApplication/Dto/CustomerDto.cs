@@ -1,4 +1,4 @@
-﻿namespace CarRentalService.Application.Dto;
+﻿namespace CarRentalService.WebApplication.Dto;
 
 /// <summary>
 /// Represents a customer in the car rental system.

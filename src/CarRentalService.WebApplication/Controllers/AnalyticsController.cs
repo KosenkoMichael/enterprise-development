@@ -1,4 +1,4 @@
-﻿using CarRentalService.Application.Services;
+﻿using CarRentalService.WebApplication.Services;
 using CarRentalService.Core.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
