@@ -5,9 +5,9 @@ using CarRentalService.Core.Domain.Repository;
 namespace CarRentalService.Application.Services;
 
 /// <summary>
-/// Provides services for managing customer entities in the system.
+/// Provides operations for managing customers in the car rental system.
 /// </summary>
-/// <param name="repository">The repository used for customer data operations.</param>
+/// <param name="repository">The repository used for customer data access.</param>
 public class CustomerService(IRepository<Customer> repository)
 {
     private static Customer MapDto(CustomerDto entity)
@@ -23,7 +23,7 @@ public class CustomerService(IRepository<Customer> repository)
     /// <summary>
     /// Creates a new customer in the system.
     /// </summary>
-    /// <param name="entity">The customer data to create.</param>
+    /// <param name="entity">The data transfer object containing customer information.</param>
     /// <returns>The unique identifier of the newly created customer.</returns>
     public async Task<Guid> CreateCustomerAsync(CustomerDto entity) =>
         await repository.CreateAsync(MapDto(entity));
@@ -31,7 +31,7 @@ public class CustomerService(IRepository<Customer> repository)
     /// <summary>
     /// Retrieves all customers from the system.
     /// </summary>
-    /// <returns>A list of all customer entities.</returns>
+    /// <returns>A list of all customers.</returns>
     public async Task<List<Customer>> GetCustomersAsync() =>
         await repository.ReadAllAsync();
 
@@ -39,7 +39,7 @@ public class CustomerService(IRepository<Customer> repository)
     /// Retrieves a specific customer by their unique identifier.
     /// </summary>
     /// <param name="id">The unique identifier of the customer.</param>
-    /// <returns>The customer entity if found; otherwise, <see langword="null"/>.</returns>
+    /// <returns>The customer if found; otherwise, null.</returns>
     public async Task<Customer?> GetCustomerAsync(Guid id) =>
         await repository.ReadAsync(id);
 
@@ -47,8 +47,8 @@ public class CustomerService(IRepository<Customer> repository)
     /// Updates an existing customer's information.
     /// </summary>
     /// <param name="id">The unique identifier of the customer to update.</param>
-    /// <param name="entity">The updated customer data.</param>
-    /// <returns>The updated customer entity if found; otherwise, <see langword="null"/>.</returns>
+    /// <param name="entity">The data transfer object containing updated customer information.</param>
+    /// <returns>The updated customer if successful; otherwise, null.</returns>
     public async Task<Customer?> UpdateCustomerAsync(Guid id, CustomerDto entity) =>
         await repository.UpdateAsync(id, MapDto(entity));
 
@@ -56,7 +56,7 @@ public class CustomerService(IRepository<Customer> repository)
     /// Deletes a customer from the system.
     /// </summary>
     /// <param name="id">The unique identifier of the customer to delete.</param>
-    /// <returns><see langword="true"/> if the customer was successfully deleted; otherwise, <see langword="false"/>.</returns>
+    /// <returns>True if deletion was successful; otherwise, false.</returns>
     public async Task<bool> DeleteCustomerAsync(Guid id) =>
         await repository.DeleteAsync(id);
 }

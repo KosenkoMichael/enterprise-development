@@ -5,7 +5,7 @@ using MongoDB.Driver;
 namespace CarRentalService.Infrastructure.Repositories;
 
 /// <summary>
-/// Implementation of the model generation repository.
+/// Repository implementation for managing <see cref="ModelGeneration"/> entities using MongoDB.
 /// </summary>
 public class ModelGenerationRepository : IRepository<ModelGeneration>
 {
@@ -13,9 +13,9 @@ public class ModelGenerationRepository : IRepository<ModelGeneration>
     private readonly IMongoCollection<ModelGeneration> _collection;
 
     /// <summary>
-    /// Initializes a new instance of the model generation repository.
+    /// Initializes a new instance of the <see cref="ModelGenerationRepository"/> class.
     /// </summary>
-    /// <param name="seeder">Seeder for initial data</param>
+    /// <param name="client">The MongoDB client used to access the database.</param>
     public ModelGenerationRepository(IMongoClient client)
     {
         _database = client.GetDatabase("car-rental");

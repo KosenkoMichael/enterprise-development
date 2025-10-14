@@ -4,7 +4,7 @@ using MongoDB.Driver;
 
 namespace CarRentalService.WebApplication;
 /// <summary>
-/// DB seeder
+/// Seeder for populating the MongoDB database with initial test data.
 /// </summary>
 
 public class DBSeeder : IHostedService
@@ -13,7 +13,7 @@ public class DBSeeder : IHostedService
     private readonly IMongoDatabase _database;
 
     /// <summary>
-    /// Mongo client
+    /// Initializes a new instance of the <see cref="DBSeeder"/> class.
     /// </summary>
     /// <param name="client"></param>
     public DBSeeder(IMongoClient client)

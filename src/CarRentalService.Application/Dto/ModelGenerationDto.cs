@@ -1,26 +1,35 @@
 ﻿using CarRentalService.Core.Domain.Models;
 
 namespace CarRentalService.Application.Dto;
+
+/// <summary>
+/// Represents a specific generation of a vehicle model in the car rental system.
+/// </summary>
 public class ModelGenerationDto
 {
+
     /// <summary>
-    /// Manufacturing year of the vehicle model generation.
+    /// The year this model generation was released.
     /// </summary>
     public required int Year { get; set; }
+
     /// <summary>
-    /// Engine volume in liters.
+    /// The engine volume (in liters) of this model generation.
     /// </summary>
     public required double EngineVolume { get; set; }
+
     /// <summary>
-    /// Transmission type (e.g., Automatic, Manual).
+    /// The type of transmission for this model generation.
     /// </summary>
     public required TransmissionType TransmissionType { get; set; }
+
     /// <summary>
-    /// ID of model associated with this generation.
+    /// The unique identifier of the vehicle model this generation belongs to.
     /// </summary>
     public required Guid VehicleModelId { get; set; }
+
     /// <summary>
-    /// Cost to rent the vehicle per hour.
+    /// The rental price per hour for this model generation.
     /// </summary>
     public required decimal RentalPricePerHour { get; set; }
 }

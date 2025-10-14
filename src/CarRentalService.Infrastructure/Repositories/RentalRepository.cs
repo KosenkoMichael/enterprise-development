@@ -3,8 +3,10 @@ using CarRentalService.Core.Domain.Repository;
 using MongoDB.Driver;
 
 namespace CarRentalService.Infrastructure.Repositories;
+
 /// <summary>
-/// Implementation of the rental repository
+/// Repository implementation for managing <see cref="Rental"/> entities using MongoDB.
+/// Calculates the total cost of rentals based on the vehicle's model generation rental price.
 /// </summary>
 public class RentalRepository : IRepository<Rental>
 {
@@ -14,9 +16,9 @@ public class RentalRepository : IRepository<Rental>
     private readonly IMongoCollection<ModelGeneration> _modelGenerationCollection;
 
     /// <summary>
-    /// Initializes a new instance of the rental repository.
+    /// Initializes a new instance of the <see cref="RentalRepository"/> class.
     /// </summary>
-    /// <param name="client">MongoDB client</param>
+    /// <param name="client">The MongoDB client used to access the database.</param>
     public RentalRepository(IMongoClient client)
     {
         _database = client.GetDatabase("car-rental");

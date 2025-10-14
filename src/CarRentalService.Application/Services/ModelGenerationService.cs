@@ -5,10 +5,10 @@ using CarRentalService.Core.Domain.Repository;
 namespace CarRentalService.Application.Services;
 
 /// <summary>
-/// Service for managing model generation operations.
+/// Provides operations for managing vehicle model generations in the car rental system.
 /// </summary>
-/// <param name="modelGenerationRepository">Model generation repository instance</param>
-/// <param name="vehicleModelRepository">Vehicle model repository instance</param>
+/// <param name="modelGenerationRepository">Repository for accessing model generation data.</param>
+/// <param name="vehicleModelRepository">Repository for validating existence of vehicle models.</param>
 public class ModelGenerationService(
     IRepository<ModelGeneration> modelGenerationRepository,
     IRepository<VehicleModel> vehicleModelRepository
@@ -27,10 +27,11 @@ public class ModelGenerationService(
     }
 
     /// <summary>
-    /// Creates a new model generation.
+    /// Creates a new model generation for a vehicle model.
     /// </summary>
-    /// <param name="entity">Model generation data</param>
-    /// <returns>Unique identifier of created model generation</returns>
+    /// <param name="entity">The DTO containing the model generation data.</param>
+    /// <returns>The unique identifier of the newly created model generation.</returns>
+    /// <exception cref="Exception">Thrown if the specified vehicle model does not exist.</exception>
     public async Task<Guid> CreateModelGenerationAsync(ModelGenerationDto entity)
     {
         if (await vehicleModelRepository.ReadAsync(entity.VehicleModelId) is null)
@@ -42,34 +43,34 @@ public class ModelGenerationService(
     }
 
     /// <summary>
-    /// Retrieves all model generations.
+    /// Retrieves all model generations from the system.
     /// </summary>
-    /// <returns>List of all model generations</returns>
+    /// <returns>A list of all model generations.</returns>
     public async Task<List<ModelGeneration>> GetModelGenerationsAsync() =>
         await modelGenerationRepository.ReadAllAsync();
 
     /// <summary>
-    /// Retrieves a specific model generation by ID.
+    /// Retrieves a specific model generation by its unique identifier.
     /// </summary>
-    /// <param name="id">Model generation identifier</param>
-    /// <returns>Model generation if found; otherwise null</returns>
+    /// <param name="id">The unique identifier of the model generation.</param>
+    /// <returns>The model generation if found; otherwise, null.</returns>
     public async Task<ModelGeneration?> GetModelGenerationAsync(Guid id) =>
         await modelGenerationRepository.ReadAsync(id);
 
     /// <summary>
     /// Updates an existing model generation.
     /// </summary>
-    /// <param name="id">Model generation identifier</param>
-    /// <param name="entity">Updated model generation data</param>
-    /// <returns>Updated model generation if found; otherwise null</returns>
+    /// <param name="id">The unique identifier of the model generation to update.</param>
+    /// <param name="entity">The DTO containing updated model generation data.</param>
+    /// <returns>The updated model generation if successful; otherwise, null.</returns>
     public async Task<ModelGeneration?> UpdateModelGenerationAsync(Guid id, ModelGenerationDto entity) =>
         await modelGenerationRepository.UpdateAsync(id, MapDto(entity));
 
     /// <summary>
-    /// Deletes a model generation by ID.
+    /// Deletes a model generation from the system.
     /// </summary>
-    /// <param name="id">Model generation identifier</param>
-    /// <returns>True if deleted successfully; otherwise false</returns>
+    /// <param name="id">The unique identifier of the model generation to delete.</param>
+    /// <returns>True if deletion was successful; otherwise, false.</returns>
     public async Task<bool> DeleteModelGenerationAsync(Guid id) =>
         await modelGenerationRepository.DeleteAsync(id);
 }

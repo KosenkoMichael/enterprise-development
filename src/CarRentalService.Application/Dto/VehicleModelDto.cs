@@ -2,29 +2,36 @@
 using DriveType = CarRentalService.Core.Domain.Models.DriveType;
 
 namespace CarRentalService.Application.Dto;
+
 /// <summary>
 /// Represents a vehicle model in the car rental system.
 /// </summary>
 public class VehicleModelDto
 {
+
     /// <summary>
-    /// Vehicle model name (e.g., "Toyota Camry").
+    /// The name of the vehicle model.
     /// </summary>
     public required string Name { get; set; }
+
     /// <summary>
-    /// Drive type of the vehicle (e.g., "FWD", "RWD", "AWD").
+    /// The drive type (e.g., front-wheel, rear-wheel, all-wheel) of the vehicle model.
     /// </summary>
     public required DriveType DriveType { get; set; }
+
+
     /// <summary>
-    /// Seat count of the vehicle.
+    /// The number of seats in the vehicle model.
     /// </summary>
     public required int SeatCount { get; set; }
+
     /// <summary>
-    /// Body type of the vehicle (e.g., "Sedan", "SUV").
+    /// The body type (e.g., sedan, SUV, hatchback) of the vehicle model.
     /// </summary>
     public required BodyType BodyType { get; set; }
+
     /// <summary>
-    /// Vehicle class (e.g., "Economy", "Luxury").
+    /// The vehicle class (e.g., economy, luxury, premium) of the vehicle model.
     /// </summary>
     public required VehicleClass Class { get; set; }
 }

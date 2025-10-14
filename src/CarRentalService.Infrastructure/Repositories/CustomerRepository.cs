@@ -4,7 +4,7 @@ using MongoDB.Driver;
 
 namespace CarRentalService.Infrastructure.Repositories;
 /// <summary>
-/// Implementation of the customer repository
+/// Repository implementation for managing <see cref="Customer"/> entities using MongoDB.
 /// </summary>
 public class CustomerRepository: IRepository<Customer>
 {
@@ -12,9 +12,9 @@ public class CustomerRepository: IRepository<Customer>
     private readonly IMongoCollection<Customer> _collection;
 
     /// <summary>
-    /// Initializes a new instance of the customer repository.
+    /// Initializes a new instance of the <see cref="CustomerRepository"/> class.
     /// </summary>
-    /// <param name="seeder">Seeder for initial data</param>
+    /// <param name="client">The MongoDB client used to access the database.</param>
     public CustomerRepository(IMongoClient client)
     {
         _database = client.GetDatabase("car-rental");

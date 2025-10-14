@@ -1,18 +1,25 @@
 ﻿using System.Drawing;
 
 namespace CarRentalService.Application.Dto;
+
+/// <summary>
+/// Represents a vehicle in the car rental system.
+/// </summary>
 public class VehicleDto
 {
+
     /// <summary>
-    /// Generation ID associated with this Vehicle.
+    /// The unique identifier of the model generation this vehicle belongs to.
     /// </summary>
     public required Guid ModelGenerationId { get; set; }
+
     /// <summary>
-    /// License plate number of the vehicle.
+    /// The license plate number of the vehicle.
     /// </summary>
     public required string LicensePlate { get; set; }
+
     /// <summary>
-    /// Color of the vehicle.
+    /// The color of the vehicle.
     /// </summary>
     public required string Color { get; set; }
 }

@@ -3,8 +3,9 @@ using CarRentalService.Core.Domain.Repository;
 using MongoDB.Driver;
 
 namespace CarRentalService.Infrastructure.Repositories;
+
 /// <summary>
-/// Implementation of the vehicle repository
+/// Repository implementation for managing <see cref="Vehicle"/> entities using MongoDB.
 /// </summary>
 public class VehicleRepository : IRepository<Vehicle>
 {
@@ -12,9 +13,9 @@ public class VehicleRepository : IRepository<Vehicle>
     private readonly IMongoCollection<Vehicle> _collection;
 
     /// <summary>
-    /// Initializes a new instance of the vehicle repository.
+    /// Initializes a new instance of the <see cref="VehicleRepository"/> class.
     /// </summary>
-    /// <param name="client">MongoDB client</param>
+    /// <param name="client">The MongoDB client used to access the database.</param>
     public VehicleRepository(IMongoClient client)
     {
         _database = client.GetDatabase("car-rental");

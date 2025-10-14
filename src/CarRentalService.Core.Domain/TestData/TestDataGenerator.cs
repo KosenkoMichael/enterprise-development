@@ -4,27 +4,14 @@ using System.Drawing;
 namespace CarRentalService.Core.Domain.TestData;
 
 /// <summary>
-/// Provides methods for generating test data used in unit tests.
+/// Test data generator for the car rental system.
 /// </summary>
 public class TestDataGenerator
 {
     /// <summary>
-    /// Generates comprehensive test data for fixture initialization.
+    /// Generates test data for the car rental system, including vehicle models, model generations, vehicles, customers, and rentals.
     /// </summary>
-    /// <returns>
-    /// A tuple containing five lists:
-    /// <list type="bullet">
-    /// <item><description><see cref="List{VehicleModel}"/> - Vehicle models with basic specifications</description></item>
-    /// <item><description><see cref="List{ModelGeneration}"/> - Model generations with technical details and pricing</description></item>
-    /// <item><description><see cref="List{Vehicle}"/> - Individual vehicles with color and license plate information</description></item>
-    /// <item><description><see cref="List{Customer}"/> - Customer profiles with driver license and personal data</description></item>
-    /// <item><description><see cref="List{Rental}"/> - Rental records with vehicle assignments and time periods</description></item>
-    /// </list>
-    /// </returns>
-    /// <remarks>
-    /// The generated data includes 10 records for each entity type with realistic relationships
-    /// between models, generations, vehicles, customers, and rentals.
-    /// </remarks>
+    /// <returns></returns>
     public (List<VehicleModel>, List<ModelGeneration>, List<Vehicle>, List<Customer>, List<Rental>) GenerateTestData()
     {
         var now = DateTime.Now;
