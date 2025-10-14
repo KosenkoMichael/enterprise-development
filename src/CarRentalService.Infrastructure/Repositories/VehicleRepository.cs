@@ -3,27 +3,26 @@ using CarRentalService.Core.Domain.Repository;
 using MongoDB.Driver;
 
 namespace CarRentalService.Infrastructure.Repositories;
-
 /// <summary>
-/// Implementation of the model generation repository.
+/// Implementation of the vehicle repository
 /// </summary>
-public class ModelGenerationRepository : IRepository<ModelGeneration>
+public class VehicleRepository : IRepository<Vehicle>
 {
     private readonly IMongoDatabase _database;
-    private readonly IMongoCollection<ModelGeneration> _collection;
+    private readonly IMongoCollection<Vehicle> _collection;
 
     /// <summary>
-    /// Initializes a new instance of the model generation repository.
+    /// Initializes a new instance of the vehicle repository.
     /// </summary>
-    /// <param name="seeder">Seeder for initial data</param>
-    public ModelGenerationRepository(IMongoClient client)
+    /// <param name="client">MongoDB client</param>
+    public VehicleRepository(IMongoClient client)
     {
         _database = client.GetDatabase("car-rental");
-        _collection = _database.GetCollection<ModelGeneration>("model-generations");
+        _collection = _database.GetCollection<Vehicle>("vehicles");
     }
 
     /// <inheritdoc/>
-    public async Task<Guid> CreateAsync(ModelGeneration entity)
+    public async Task<Guid> CreateAsync(Vehicle entity)
     {
         await _collection.InsertOneAsync(entity);
         return entity.Id;
@@ -37,15 +36,15 @@ public class ModelGenerationRepository : IRepository<ModelGeneration>
     }
 
     /// <inheritdoc/>
-    public async Task<List<ModelGeneration>> ReadAllAsync() =>
-         await (await _collection.FindAsync(Builders<ModelGeneration>.Filter.Empty)).ToListAsync();
+    public async Task<List<Vehicle>> ReadAllAsync() =>
+         await (await _collection.FindAsync(Builders<Vehicle>.Filter.Empty)).ToListAsync();
 
     /// <inheritdoc/>
-    public async Task<ModelGeneration?> ReadAsync(Guid id) =>
+    public async Task<Vehicle?> ReadAsync(Guid id) =>
         await _collection.Find(c => c.Id == id).FirstOrDefaultAsync();
 
     /// <inheritdoc/>
-    public async Task<ModelGeneration?> UpdateAsync(Guid id, ModelGeneration entity)
+    public async Task<Vehicle?> UpdateAsync(Guid id, Vehicle entity)
     {
         return await _collection.FindOneAndReplaceAsync(x => x.Id == id, entity);
     }

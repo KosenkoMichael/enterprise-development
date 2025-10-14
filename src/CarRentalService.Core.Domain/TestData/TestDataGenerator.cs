@@ -62,16 +62,16 @@ public class TestDataGenerator
         // Vehicles
         var vehicles = new List<Vehicle>
         {
-            new() { Generation = modelGenerations[0], Color = Color.Black, LicensePlate = "A001BCRUS" },
-            new() { Generation = modelGenerations[1], Color = Color.White, LicensePlate = "A002BCRUS" },
-            new() { Generation = modelGenerations[2], Color = Color.Silver, LicensePlate = "A003BCRUS" },
-            new() { Generation = modelGenerations[3], Color = Color.Red, LicensePlate = "A004BCRUS" },
-            new() { Generation = modelGenerations[4], Color = Color.Blue, LicensePlate = "A005BCRUS" },
-            new() { Generation = modelGenerations[5], Color = Color.Black, LicensePlate = "A006BCRUS" },
-            new() { Generation = modelGenerations[6], Color = Color.White, LicensePlate = "A007BCRUS" },
-            new() { Generation = modelGenerations[7], Color = Color.Gray, LicensePlate = "A008BCRUS" },
-            new() { Generation = modelGenerations[8], Color = Color.Yellow, LicensePlate = "A009BCRUS" },
-            new() { Generation = modelGenerations[9], Color = Color.Green, LicensePlate = "A010BCRUS" }
+            new() { ModelGenerationId = modelGenerations[0].Id, Color = Color.Black, LicensePlate = "A001BCRUS" },
+            new() { ModelGenerationId = modelGenerations[1].Id, Color = Color.White, LicensePlate = "A002BCRUS" },
+            new() { ModelGenerationId = modelGenerations[2].Id, Color = Color.Silver, LicensePlate = "A003BCRUS" },
+            new() { ModelGenerationId = modelGenerations[3].Id, Color = Color.Red, LicensePlate = "A004BCRUS" },
+            new() { ModelGenerationId = modelGenerations[4].Id, Color = Color.Blue, LicensePlate = "A005BCRUS" },
+            new() { ModelGenerationId = modelGenerations[5].Id, Color = Color.Black, LicensePlate = "A006BCRUS" },
+            new() { ModelGenerationId = modelGenerations[6].Id, Color = Color.White, LicensePlate = "A007BCRUS" },
+            new() { ModelGenerationId = modelGenerations[7].Id, Color = Color.Gray, LicensePlate = "A008BCRUS" },
+            new() { ModelGenerationId = modelGenerations[8].Id, Color = Color.Yellow, LicensePlate = "A009BCRUS" },
+            new() { ModelGenerationId = modelGenerations[9].Id, Color = Color.Green, LicensePlate = "A010BCRUS" }
         };
 
         // Customers
@@ -92,16 +92,16 @@ public class TestDataGenerator
         // Rentals
         var rentals = new List<Rental>
         {
-            new() { RentedVehicle = vehicles[0], Customer = customers[0], RentStartTime = now.AddHours(-2), RentalDurationHours = 8 },
-            new() { RentedVehicle = vehicles[1], Customer = customers[1], RentStartTime = now.AddHours(-3), RentalDurationHours = 6 },
-            new() { RentedVehicle = vehicles[2], Customer = customers[2], RentStartTime = now.AddDays(-1), RentalDurationHours = 10 },
-            new() { RentedVehicle = vehicles[3], Customer = customers[3], RentStartTime = now.AddDays(-2), RentalDurationHours = 12 },
-            new() { RentedVehicle = vehicles[4], Customer = customers[4], RentStartTime = now.AddDays(-3), RentalDurationHours = 14 },
-            new() { RentedVehicle = vehicles[5], Customer = customers[5], RentStartTime = now.AddDays(-4), RentalDurationHours = 9 },
-            new() { RentedVehicle = vehicles[6], Customer = customers[6], RentStartTime = now.AddDays(-5), RentalDurationHours = 11 },
-            new() { RentedVehicle = vehicles[7], Customer = customers[7], RentStartTime = now.AddDays(-6), RentalDurationHours = 7 },
-            new() { RentedVehicle = vehicles[8], Customer = customers[8], RentStartTime = now.AddDays(-7), RentalDurationHours = 13 },
-            new() { RentedVehicle = vehicles[9], Customer = customers[9], RentStartTime = now.AddDays(-8), RentalDurationHours = 15 }
+            new() { VehicleId = vehicles[0].Id, CustomerId = customers[0].Id, RentStartTime = now.AddHours(-2), RentalDurationHours = 8 },
+            new() { VehicleId = vehicles[1].Id, CustomerId = customers[1].Id, RentStartTime = now.AddHours(-3), RentalDurationHours = 6 },
+            new() { VehicleId = vehicles[2].Id, CustomerId = customers[2].Id, RentStartTime = now.AddDays(-1), RentalDurationHours = 10 },
+            new() { VehicleId = vehicles[3].Id, CustomerId = customers[3].Id, RentStartTime = now.AddDays(-2), RentalDurationHours = 12 },
+            new() { VehicleId = vehicles[4].Id, CustomerId = customers[4].Id, RentStartTime = now.AddDays(-3), RentalDurationHours = 14 },
+            new() { VehicleId = vehicles[5].Id, CustomerId = customers[5].Id, RentStartTime = now.AddDays(-4), RentalDurationHours = 9 },
+            new() { VehicleId = vehicles[6].Id, CustomerId = customers[6].Id, RentStartTime = now.AddDays(-5), RentalDurationHours = 11 },
+            new() { VehicleId = vehicles[7].Id, CustomerId = customers[7].Id, RentStartTime = now.AddDays(-6), RentalDurationHours = 7 },
+            new() { VehicleId = vehicles[8].Id, CustomerId = customers[8].Id, RentStartTime = now.AddDays(-7), RentalDurationHours = 13 },
+            new() { VehicleId = vehicles[9].Id, CustomerId = customers[9].Id, RentStartTime = now.AddDays(-8), RentalDurationHours = 15 }
         };
 
         return (vehicleModels, modelGenerations, vehicles, customers, rentals);
