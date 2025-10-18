@@ -1,7 +1,7 @@
 ﻿using CarRentalService.WebApplication.Services;
 using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
-using CarRentalService.Core.Domain.TestData;
+using CarRentalService.Core.Domain.DataSeed;
 using Moq;
 
 namespace CarRentalService.Core.Tests.Fixtures;
@@ -48,7 +48,7 @@ public class AnalyticsServiceFixture
     /// </summary>
     public AnalyticsServiceFixture()
     {
-        var generator = new TestDataGenerator();
+        var generator = new DataSeeder();
         (VehicleModels, ModelGenerations, Vehicles, Customers, Rentals) = generator.GenerateTestData();
 
         var vehicleModelRepoMock = new Mock<IRepository<VehicleModel>>();

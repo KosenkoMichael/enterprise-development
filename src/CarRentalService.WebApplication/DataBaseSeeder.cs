@@ -1,5 +1,5 @@
 ﻿using CarRentalService.Core.Domain.Models;
-using CarRentalService.Core.Domain.TestData;
+using CarRentalService.Core.Domain.DataSeed;
 using MongoDB.Driver;
 
 namespace CarRentalService.WebApplication;
@@ -27,7 +27,7 @@ public class DataBaseSeeder : IHostedService
     {
         var collections = (await (await _database.ListCollectionsAsync(cancellationToken: cancellationToken)).ToListAsync(cancellationToken: cancellationToken)).Select(x => x["name"].AsString).ToHashSet();
 
-        var generator = new TestDataGenerator();
+        var generator = new DataSeeder();
         var (vehicleModels, modelGenerations, vehicles, customers, rentals) = generator.GenerateTestData();
 
         if (!collections.Contains("customers"))
