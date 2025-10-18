@@ -32,7 +32,7 @@ BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard
 
 builder.AddMongoDBClient("car-rental");
 
-builder.Services.AddHostedService<DataBaseSeeder>();
+builder.Services.AddHostedService<DatabaseSeeder>();
 
 builder.Services.AddScoped<IRepository<Customer>, CustomerRepository>();
 builder.Services.AddScoped<CustomerService>();
