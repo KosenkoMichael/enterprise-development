@@ -10,9 +10,10 @@ namespace CarRentalService.WebApplication.Controllers;
 /// Controller for managing vehicles in the car rental system.
 /// </summary>
 /// <param name="service">Service handling vehicle operations.</param>
+/// /// <param name="logger">logger.</param>
 [Route("api/[controller]")]
 [ApiController]
-public class VehiclesController(IVehicleService service) : ControllerBase
+public class VehiclesController(IVehicleService service, ILogger<AnalyticsController> logger) : ControllerBase
 {
     /// <summary>
     /// Retrieves all vehicles.
@@ -21,9 +22,11 @@ public class VehiclesController(IVehicleService service) : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<VehicleCollectionResponse> GetAll() =>
-        (await service.GetVehiclesAsync()).ToResponse();
-
+    public async Task<VehicleCollectionResponse> GetAll()
+    {
+        logger.LogInformation("called GetAll in VehiclesController");
+        return  (await service.GetVehiclesAsync()).ToResponse();
+    }
     /// <summary>
     /// Retrieves a specific vehicle by unique identifier.
     /// </summary>
@@ -35,6 +38,7 @@ public class VehiclesController(IVehicleService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<VehicleDto>> GetById(Guid id)
     {
+        logger.LogInformation("called GetById in VehiclesController");
         var result = await service.GetVehicleAsync(id);
         if (result is null) return NotFound();
         return result.ToDto();
@@ -49,6 +53,7 @@ public class VehiclesController(IVehicleService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Create([FromBody] VehicleRequest vehicleDto)
     {
+        logger.LogInformation("called Create in VehiclesController");
         var result = await service.CreateVehicleAsync(vehicleDto.ToDomain());
         return CreatedAtAction(nameof(GetById), new { id = result }, null);
     }
@@ -65,6 +70,7 @@ public class VehiclesController(IVehicleService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<VehicleDto>> Update(Guid id, [FromBody] VehicleRequest vehicleDto)
     {
+        logger.LogInformation("called Update in VehiclesController");
         var result = await service.UpdateVehicleAsync(id, vehicleDto.ToDomain());
         if (result is null) return NotFound();
         return result.ToDto();
@@ -77,8 +83,11 @@ public class VehiclesController(IVehicleService service) : ControllerBase
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<bool> Delete(Guid id) =>
-        await service.DeleteVehicleAsync(id);
+    public async Task<bool> Delete(Guid id)
+    {
+        logger.LogInformation("called Delete in VehiclesController");
+        return await service.DeleteVehicleAsync(id);
+    }
 
     /// <summary>
     /// Returns model generation, related with this vehicle
@@ -91,6 +100,7 @@ public class VehiclesController(IVehicleService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ModelGenerationDto>> GetRelatedModelGeneration(Guid id)
     {
+        logger.LogInformation("called GetRelatedModelGeneration in VehiclesController");
         var result = await service.GetRelatedModelGeneration(id);
         if (result is null) return NotFound();
         return result.ToDto();

@@ -10,9 +10,10 @@ namespace CarRentalService.WebApplication.Controllers;
 /// Controller for managing customers in the car rental system.
 /// </summary>
 /// <param name="service">Service handling customer operations.</param>
+/// /// <param name="logger">logger.</param>
 [Route("api/[controller]")]
 [ApiController]
-public class CustomersController(ICustomerService service) : ControllerBase
+public class CustomersController(ICustomerService service, ILogger<AnalyticsController> logger) : ControllerBase
 {
     /// <summary>
     /// Retrieves all customers.
@@ -21,8 +22,11 @@ public class CustomersController(ICustomerService service) : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<CustomerCollectionResponse> GetAll() =>
-        (await service.GetCustomersAsync()).ToResponse();
+    public async Task<CustomerCollectionResponse> GetAll()
+    {
+        logger.LogInformation("called GetAll in CustomersController");
+        return (await service.GetCustomersAsync()).ToResponse();
+    }
 
     /// <summary>
     /// Retrieves a specific customer by unique identifier.
@@ -35,6 +39,7 @@ public class CustomersController(ICustomerService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<CustomerDto>> GetById(Guid id)
     {
+        logger.LogInformation("called GetById in CustomersController");
         var result = await service.GetCustomerAsync(id);
         if (result is null) return NotFound();
         return result.ToDto();
@@ -50,6 +55,7 @@ public class CustomersController(ICustomerService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Create([FromBody] CustomerRequest customerDto)
     {
+        logger.LogInformation("called Create in CustomersController");
         var result = await service.CreateCustomerAsync(customerDto.ToDomain());
         return CreatedAtAction(nameof(GetById), new { id = result }, null);
     }
@@ -65,6 +71,7 @@ public class CustomersController(ICustomerService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<CustomerDto>> Update(Guid id, [FromBody] CustomerRequest customerDto)
     {
+        logger.LogInformation("called Update in CustomersController");
         var result = await service.UpdateCustomerAsync(id, customerDto.ToDomain());
         if (result is null) return NotFound();
         return result.ToDto();
@@ -78,6 +85,9 @@ public class CustomersController(ICustomerService service) : ControllerBase
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<bool> Delete(Guid id) =>
-        await service.DeleteCustomerAsync(id);
+    public async Task<bool> Delete(Guid id)
+    {
+        logger.LogInformation("called Delete in CustomersController");
+        return await service.DeleteCustomerAsync(id);
+    }
 }

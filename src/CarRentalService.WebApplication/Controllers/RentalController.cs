@@ -10,9 +10,10 @@ namespace CarRentalService.WebApplication.Controllers;
 /// Controller for managing rentals in the car rental system.
 /// </summary>
 /// <param name="service">Service handling rental operations.</param>
+/// /// <param name="logger">logger.</param>
 [Route("api/[controller]")]
 [ApiController]
-public class RentalsController(IRentalService service) : ControllerBase
+public class RentalsController(IRentalService service, ILogger<AnalyticsController> logger) : ControllerBase
 {
     /// <summary>
     /// Retrieves all rentals.
@@ -21,8 +22,11 @@ public class RentalsController(IRentalService service) : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<RentalCollectionResponse> GetAll() =>
-        (await service.GetRentalsAsync()).ToResponse();
+    public async Task<RentalCollectionResponse> GetAll()
+    {
+        logger.LogInformation("called GetAll in RentalsController");
+        return (await service.GetRentalsAsync()).ToResponse();
+    }
 
     /// <summary>
     /// Retrieves a specific rental by unique identifier.
@@ -35,6 +39,7 @@ public class RentalsController(IRentalService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<RentalDto>> GetById(Guid id)
     {
+        logger.LogInformation("called GetById in RentalsController");
         var result = await service.GetRentalAsync(id);
         if (result is null) return NotFound();
         return result.ToDto();
@@ -49,6 +54,7 @@ public class RentalsController(IRentalService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Create([FromBody] RentalRequest rentalDto)
     {
+        logger.LogInformation("called Create in RentalsController");
         var result = await service.CreateRentalAsync(rentalDto.ToDomain());
         return CreatedAtAction(nameof(GetById), new { id = result }, null);
     }
@@ -65,6 +71,7 @@ public class RentalsController(IRentalService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<RentalDto>> Update(Guid id, [FromBody] RentalRequest rentalDto)
     {
+        logger.LogInformation("called Update in RentalsController");
         var result = await service.UpdateRentalAsync(id, rentalDto.ToDomain());
         if (result is null) return NotFound();
         return result.ToDto();
@@ -77,8 +84,11 @@ public class RentalsController(IRentalService service) : ControllerBase
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<bool> Delete(Guid id) =>
-        await service.DeleteRentalAsync(id);
+    public async Task<bool> Delete(Guid id)
+    {
+        logger.LogInformation("called Delete in RentalsController");
+        return await service.DeleteRentalAsync(id);
+    }
 
     /// <summary>
     /// Returns customer, related with this rental
@@ -91,6 +101,7 @@ public class RentalsController(IRentalService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<CustomerDto>> GetRelatedCustomer(Guid id)
     {
+        logger.LogInformation("called GetRelatedCustomer in RentalsController");
         var result = await service.GetRelatedCustomer(id);
         if (result is null) return NotFound();
         return result.ToDto();
@@ -107,6 +118,7 @@ public class RentalsController(IRentalService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<VehicleDto>> GetRelatedVehicle(Guid id)
     {
+        logger.LogInformation("called GetRelatedVehicle in RentalsController");
         var result = await service.GetRelatedVehicle(id);
         if (result is null) return NotFound();
         return result.ToDto();

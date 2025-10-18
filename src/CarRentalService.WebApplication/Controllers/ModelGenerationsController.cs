@@ -10,9 +10,10 @@ namespace CarRentalService.WebApplication.Controllers;
 /// Controller for managing model generations in the car rental system.
 /// </summary>
 /// <param name="service">Service handling model generation operations.</param>
+/// /// <param name="logger">logger.</param>
 [Route("api/[controller]")]
 [ApiController]
-public class ModelGenerationsController(IModelGenerationService service) : ControllerBase
+public class ModelGenerationsController(IModelGenerationService service, ILogger<AnalyticsController> logger) : ControllerBase
 {
     /// <summary>
     /// Retrieves all model generations.
@@ -21,8 +22,11 @@ public class ModelGenerationsController(IModelGenerationService service) : Contr
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ModelGenerationCollectionResponse> GetAll() =>
-        (await service.GetModelGenerationsAsync()).ToResponse();
+    public async Task<ModelGenerationCollectionResponse> GetAll()
+    {
+        logger.LogInformation("called GetAll in ModelGenerationsController");
+        return (await service.GetModelGenerationsAsync()).ToResponse();
+    }
 
     /// <summary>
     /// Retrieves a specific model generation by unique identifier.
@@ -35,6 +39,7 @@ public class ModelGenerationsController(IModelGenerationService service) : Contr
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ModelGenerationDto>> GetById(Guid id)
     {
+        logger.LogInformation("called GetById in ModelGenerationsController");
         var result = await service.GetModelGenerationAsync(id);
         if (result is null) return NotFound();
         return result.ToDto();
@@ -49,6 +54,7 @@ public class ModelGenerationsController(IModelGenerationService service) : Contr
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Create([FromBody] ModelGenerationRequest modelGenerationDto)
     {
+        logger.LogInformation("called Create in ModelGenerationsController");
         var result = await service.CreateModelGenerationAsync(modelGenerationDto.ToDomain());
         return CreatedAtAction(nameof(GetById), new { id = result }, null);
     }
@@ -65,6 +71,7 @@ public class ModelGenerationsController(IModelGenerationService service) : Contr
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ModelGenerationDto>> Update(Guid id, [FromBody] ModelGenerationRequest modelGenerationDto)
     {
+        logger.LogInformation("called Update in ModelGenerationsController");
         var result = await service.UpdateModelGenerationAsync(id, modelGenerationDto.ToDomain());
         if (result is null) return NotFound();
         return result.ToDto();
@@ -77,8 +84,11 @@ public class ModelGenerationsController(IModelGenerationService service) : Contr
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<bool> Delete(Guid id) =>
-        await service.DeleteModelGenerationAsync(id);
+    public async Task<bool> Delete(Guid id)
+    {
+        logger.LogInformation("called Delete in ModelGenerationsController");
+        return await service.DeleteModelGenerationAsync(id);
+    }
 
     /// <summary>
     /// Returns vehicle model, related with this model generation
@@ -91,6 +101,7 @@ public class ModelGenerationsController(IModelGenerationService service) : Contr
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<VehicleModelDto>> GetRelatedVehicleModel(Guid id)
     {
+        logger.LogInformation("called GetRelatedVehicleModel in ModelGenerationsController");
         var result = await service.GetRelatedVehicleModel(id);
         if (result is null) return NotFound();
         return result.ToDto();
