@@ -61,4 +61,14 @@ public class ModelGenerationService(
     /// <returns>True if deletion was successful; otherwise, false.</returns>
     public async Task<bool> DeleteModelGenerationAsync(Guid id) =>
         await modelGenerationRepository.DeleteAsync(id);
+
+    /// <summary>
+    /// Returns vehicle model, related with this model generation
+    /// </summary>
+    /// <param name="id">id of model generation</param>
+    /// <returns>Vehicle model</returns>
+    public async Task<VehicleModel?> GetRelatedVehicleModel(Guid id) {
+        var modelGeneration = await modelGenerationRepository.ReadAsync(id);
+        return await vehicleModelRepository.ReadAsync(modelGeneration!.VehicleModelId);
+    }
 }

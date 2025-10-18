@@ -1,4 +1,5 @@
-﻿using CarRentalService.WebApplication.Dto;
+﻿using CarRentalService.Core.Domain.Service;
+using CarRentalService.WebApplication.Dto;
 using CarRentalService.WebApplication.Mappers;
 using CarRentalService.WebApplication.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,7 @@ namespace CarRentalService.WebApplication.Controllers;
 /// <param name="service">Analytics service handling complex queries.</param>
 [Route("api/[controller]")]
 [ApiController]
-public class AnalyticsController(AnalyticsService service) : ControllerBase
+public class AnalyticsController(IAnalyticsService service) : ControllerBase
 {
     /// <summary>
     /// Returns all customers who rented vehicles of a specified model, ordered by full name.

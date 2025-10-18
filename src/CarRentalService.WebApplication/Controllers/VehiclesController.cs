@@ -1,4 +1,5 @@
-﻿using CarRentalService.WebApplication.Dto;
+﻿using CarRentalService.Core.Domain.Service;
+using CarRentalService.WebApplication.Dto;
 using CarRentalService.WebApplication.Mappers;
 using CarRentalService.WebApplication.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,7 @@ namespace CarRentalService.WebApplication.Controllers;
 /// <param name="service">Service handling vehicle operations.</param>
 [Route("api/[controller]")]
 [ApiController]
-public class VehiclesController(VehicleService service) : ControllerBase
+public class VehiclesController(IVehicleService service) : ControllerBase
 {
     /// <summary>
     /// Retrieves all vehicles.
@@ -78,4 +79,20 @@ public class VehiclesController(VehicleService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<bool> Delete(Guid id) =>
         await service.DeleteVehicleAsync(id);
+
+    /// <summary>
+    /// Returns model generation, related with this vehicle
+    /// </summary>
+    /// <param name="id">id of vehicle</param>
+    /// <returns>model generation</returns>
+    [HttpGet("{id:guid}/modelgeneration")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<ModelGenerationDto>> GetRelatedModelGeneration(Guid id)
+    {
+        var result = await service.GetRelatedModelGeneration(id);
+        if (result is null) return NotFound();
+        return result.ToDto();
+    }
 }

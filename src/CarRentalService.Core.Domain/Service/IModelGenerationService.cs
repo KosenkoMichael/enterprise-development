@@ -36,4 +36,10 @@ public interface IModelGenerationService
     /// <param name="entity">The updated model generation data.</param>
     /// <returns>The updated model generation if successful; otherwise, null.</returns>
     public Task<ModelGeneration?> UpdateModelGenerationAsync(Guid id, ModelGeneration entity);
+    /// <summary>
+    /// Returns vehicle model, related with this model generation
+    /// </summary>
+    /// <param name="id">id of model generation</param>
+    /// <returns>vehicle model</returns>
+    public Task<VehicleModel?> GetRelatedVehicleModel(Guid id);
 }

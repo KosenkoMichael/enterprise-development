@@ -1,4 +1,5 @@
-﻿using CarRentalService.WebApplication.Dto;
+﻿using CarRentalService.Core.Domain.Service;
+using CarRentalService.WebApplication.Dto;
 using CarRentalService.WebApplication.Mappers;
 using CarRentalService.WebApplication.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,7 @@ namespace CarRentalService.WebApplication.Controllers;
 /// <param name="service">Service handling rental operations.</param>
 [Route("api/[controller]")]
 [ApiController]
-public class RentalsController(RentalService service) : ControllerBase
+public class RentalsController(IRentalService service) : ControllerBase
 {
     /// <summary>
     /// Retrieves all rentals.
@@ -78,4 +79,36 @@ public class RentalsController(RentalService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<bool> Delete(Guid id) =>
         await service.DeleteRentalAsync(id);
+
+    /// <summary>
+    /// Returns customer, related with this rental
+    /// </summary>
+    /// <param name="id">id of rental</param>
+    /// <returns>customer</returns>
+    [HttpGet("{id:guid}/customer")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<CustomerDto>> GetRelatedCustomer(Guid id)
+    {
+        var result = await service.GetRelatedCustomer(id);
+        if (result is null) return NotFound();
+        return result.ToDto();
+    }
+
+    /// <summary>
+    /// Returns vehicle, related with this rental
+    /// </summary>
+    /// <param name="id">id of rental</param>
+    /// <returns>vehicle</returns>
+    [HttpGet("{id:guid}/vehicle")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<VehicleDto>> GetRelatedVehicle(Guid id)
+    {
+        var result = await service.GetRelatedVehicle(id);
+        if (result is null) return NotFound();
+        return result.ToDto();
+    }
 }

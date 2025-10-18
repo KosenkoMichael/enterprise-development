@@ -36,4 +36,18 @@ public interface IRentalService
     /// <param name="entity">The updated rental information.</param>
     /// <returns>The updated rental if successful; otherwise, null.</returns>
     public Task<Rental?> UpdateRentalAsync(Guid id, Rental entity);
+
+    /// <summary>
+    /// Returns vehicle, related with this rental
+    /// </summary>
+    /// <param name="id">id of rental</param>
+    /// <returns>vehicle</returns>
+    public Task<Vehicle?> GetRelatedVehicle(Guid id);
+
+    /// <summary>
+    /// Returns customer, related with this rental
+    /// </summary>
+    /// <param name="id">id of rental</param>
+    /// <returns>customer</returns>
+    public Task<Customer?> GetRelatedCustomer(Guid id);
 }

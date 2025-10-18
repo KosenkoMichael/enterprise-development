@@ -1,4 +1,5 @@
-﻿using CarRentalService.WebApplication.Dto;
+﻿using CarRentalService.Core.Domain.Service;
+using CarRentalService.WebApplication.Dto;
 using CarRentalService.WebApplication.Mappers;
 using CarRentalService.WebApplication.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,7 @@ namespace CarRentalService.WebApplication.Controllers;
 /// <param name="service">Service handling vehicle model operations.</param>
 [Route("api/[controller]")]
 [ApiController]
-public class VehicleModelsController(VehicleModelService service) : ControllerBase
+public class VehicleModelsController(IVehicleModelService service) : ControllerBase
 {
     /// <summary>
     /// Retrieves all vehicle models.

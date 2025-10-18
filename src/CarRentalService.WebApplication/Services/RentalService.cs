@@ -1,6 +1,7 @@
 ﻿using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
 using CarRentalService.Core.Domain.Service;
+using CarRentalService.Infrastructure.Repositories;
 
 namespace CarRentalService.WebApplication.Services;
 
@@ -70,4 +71,26 @@ public class RentalService(
     /// <returns>True if deletion was successful; otherwise, false.</returns>
     public async Task<bool> DeleteRentalAsync(Guid id) =>
         await rentalRepository.DeleteAsync(id);
+
+    /// <summary>
+    /// Returns vehicle, related with this rental
+    /// </summary>
+    /// <param name="id">id of rental</param>
+    /// <returns>vehicle</returns>
+    public async Task<Vehicle?> GetRelatedVehicle(Guid id)
+    {
+        var rental = await rentalRepository.ReadAsync(id);
+        return await vehicleRepository.ReadAsync(rental!.VehicleId);
+    }
+
+    /// <summary>
+    /// Returns customer, related with this rental
+    /// </summary>
+    /// <param name="id">id of rental</param>
+    /// <returns>customer</returns>
+    public async Task<Customer?> GetRelatedCustomer(Guid id)
+    {
+        var rental = await rentalRepository.ReadAsync(id);
+        return await customerRepository.ReadAsync(rental!.CustomerId);
+    }
 }

@@ -38,4 +38,11 @@ public interface IVehicleService
     /// <param name="entity">The updated vehicle information.</param>
     /// <returns>The updated vehicle if successful; otherwise, null.</returns>
     public Task<Vehicle?> UpdateVehicleAsync(Guid id, Vehicle entity);
+
+    /// <summary>
+    /// Returns model generation related with this vehicle
+    /// </summary>
+    /// <param name="id">vehicle id</param>
+    /// <returns>model generation</returns>
+    public Task<ModelGeneration?> GetRelatedModelGeneration(Guid id);
 }
