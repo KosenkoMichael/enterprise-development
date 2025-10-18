@@ -1,5 +1,6 @@
 ﻿using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
+using CarRentalService.Core.Domain.Service;
 using CarRentalService.Infrastructure.Repositories;
 using CarRentalService.WebApplication.Dto;
 using CarRentalService.WebApplication.Mappers;
@@ -16,17 +17,17 @@ public class RentalService(
     IRepository<Rental> rentalRepository,
     IRepository<Customer> customerRepository,
     IRepository<Vehicle> vehicleRepository
-    )
+    ) : IRentalService
 {
     /// <summary>
     /// Creates a new rental transaction.
     /// </summary>
-    /// <param name="entity">The DTO containing rental information.</param>
+    /// <param name="entity">The rental information.</param>
     /// <returns>The unique identifier of the newly created rental.</returns>
     /// <exception cref="KeyNotFoundException">
     /// Thrown if the specified customer or vehicle does not exist.
     /// </exception>
-    public async Task<Guid> CreateRentalAsync(RentalRequest entity)
+    public async Task<Guid> CreateRentalAsync(Rental entity)
     {
         if (await customerRepository.ReadAsync(entity.CustomerId) is null)
         {
@@ -38,7 +39,7 @@ public class RentalService(
             throw new KeyNotFoundException($"Vehicle with Id = {entity.VehicleId} does not found");
         }
 
-        return await rentalRepository.CreateAsync(entity.ToDomain());
+        return await rentalRepository.CreateAsync(entity);
     }
 
     /// <summary>
@@ -60,10 +61,10 @@ public class RentalService(
     /// Updates an existing rental transaction.
     /// </summary>
     /// <param name="id">The unique identifier of the rental to update.</param>
-    /// <param name="entity">The DTO containing updated rental information.</param>
+    /// <param name="entity">The updated rental information.</param>
     /// <returns>The updated rental if successful; otherwise, null.</returns>
-    public async Task<Rental?> UpdateRentalAsync(Guid id, RentalRequest entity) =>
-        await rentalRepository.UpdateAsync(id, entity.ToDomain());
+    public async Task<Rental?> UpdateRentalAsync(Guid id, Rental entity) =>
+        await rentalRepository.UpdateAsync(id, entity);
 
     /// <summary>
     /// Deletes a rental transaction from the system.

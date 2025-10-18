@@ -1,5 +1,6 @@
 ﻿using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
+using CarRentalService.Core.Domain.Service;
 using CarRentalService.WebApplication.Dto;
 using CarRentalService.WebApplication.Mappers;
 
@@ -9,15 +10,15 @@ namespace CarRentalService.WebApplication.Services;
 /// Provides operations for managing vehicle models in the car rental system.
 /// </summary>
 /// <param name="repository">Repository for accessing vehicle model data.</param>
-public class VehicleModelService(IRepository<VehicleModel> repository)
+public class VehicleModelService(IRepository<VehicleModel> repository) : IVehicleModelService
 {
     /// <summary>
     /// Creates a new vehicle model.
     /// </summary>
-    /// <param name="entity">The DTO containing vehicle model information.</param>
+    /// <param name="entity">The vehicle model information.</param>
     /// <returns>The unique identifier of the newly created vehicle model.</returns>
-    public async Task<Guid> CreateVehicleModel(VehicleModelRequest entity) =>
-        await repository.CreateAsync(entity.ToDomain());
+    public async Task<Guid> CreateVehicleModel(VehicleModel entity) =>
+        await repository.CreateAsync(entity);
 
     /// <summary>
     /// Retrieves all vehicle models from the system.
@@ -38,10 +39,10 @@ public class VehicleModelService(IRepository<VehicleModel> repository)
     /// Updates an existing vehicle model.
     /// </summary>
     /// <param name="id">The unique identifier of the vehicle model to update.</param>
-    /// <param name="entity">The DTO containing updated vehicle model information.</param>
+    /// <param name="entity">The updated vehicle model information.</param>
     /// <returns>The updated vehicle model if successful; otherwise, null.</returns>
-    public async Task<VehicleModel?> UpdateVehicleModel(Guid id, VehicleModelRequest entity) =>
-        await repository.UpdateAsync(id, entity.ToDomain());
+    public async Task<VehicleModel?> UpdateVehicleModel(Guid id, VehicleModel entity) =>
+        await repository.UpdateAsync(id, entity);
 
     /// <summary>
     /// Deletes a vehicle model from the system.

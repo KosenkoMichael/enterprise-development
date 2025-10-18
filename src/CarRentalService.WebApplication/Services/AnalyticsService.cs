@@ -1,5 +1,6 @@
 ﻿using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
+using CarRentalService.Core.Domain.Service;
 using CarRentalService.WebApplication.Dto;
 
 namespace CarRentalService.WebApplication.Services;
@@ -11,7 +12,7 @@ public class AnalyticsService(
         IRepository<Rental> _rentalRepository,
         IRepository<Vehicle> _vehicleRepository,
         IRepository<Customer> _customerRepository,
-        IRepository<ModelGeneration> _modelGenerationRepository)
+        IRepository<ModelGeneration> _modelGenerationRepository) : IAnalyticsService
 {
     /// <summary>
     /// Returns all customers who rented vehicles of a specified model, ordered by full name.

@@ -9,6 +9,7 @@ using MongoDB.Bson.Serialization.Serializers;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using CarRentalService.WebApplication.Dto;
+using CarRentalService.Core.Domain.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,21 +37,21 @@ builder.AddMongoDBClient("car-rental");
 builder.Services.AddHostedService<DatabaseSeeder>();
 
 builder.Services.AddScoped<IRepository<Customer>, CustomerRepository>();
-builder.Services.AddScoped<CustomerService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 builder.Services.AddScoped<IRepository<VehicleModel>, VehicleModelRepository>();
-builder.Services.AddScoped<VehicleModelService>();
+builder.Services.AddScoped<IVehicleModelService, VehicleModelService>();
 
 builder.Services.AddScoped<IRepository<ModelGeneration>, ModelGenerationRepository>();
-builder.Services.AddScoped<ModelGenerationService>();
+builder.Services.AddScoped<IModelGenerationService, ModelGenerationService>();
 
 builder.Services.AddScoped<IRepository<Vehicle>, VehicleRepository>();
-builder.Services.AddScoped<VehicleService>();
+builder.Services.AddScoped<IVehicleService, VehicleService>();
 
 builder.Services.AddScoped<IRepository<Rental>, RentalRepository>();
-builder.Services.AddScoped<RentalService>();
+builder.Services.AddScoped<IRentalService, RentalService>();
 
-builder.Services.AddScoped<AnalyticsService>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
 var app = builder.Build();
 

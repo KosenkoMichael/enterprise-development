@@ -49,7 +49,7 @@ public class CustomersController(CustomerService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Create([FromBody] CustomerRequest customerDto) {
-        var result = await service.CreateCustomerAsync(customerDto);
+        var result = await service.CreateCustomerAsync(customerDto.ToDomain());
         return CreatedAtAction(nameof(GetById), new {id = result}, null);
     }
     /// <summary>
@@ -64,7 +64,7 @@ public class CustomersController(CustomerService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<CustomerDto>> Update(Guid id, [FromBody] CustomerRequest customerDto)
     {
-        var result = await service.UpdateCustomerAsync(id, customerDto);
+        var result = await service.UpdateCustomerAsync(id, customerDto.ToDomain());
         if (result is null) return NotFound();
         return result.ToDto();
     }

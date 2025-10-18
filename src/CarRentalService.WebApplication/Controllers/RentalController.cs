@@ -48,7 +48,7 @@ public class RentalsController(RentalService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Create([FromBody] RentalRequest rentalDto)
     {
-        var result = await service.CreateRentalAsync(rentalDto);
+        var result = await service.CreateRentalAsync(rentalDto.ToDomain());
         return CreatedAtAction(nameof(GetById), new { id = result }, null);
     }
 
@@ -63,7 +63,7 @@ public class RentalsController(RentalService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<RentalDto>> Update(Guid id, [FromBody] RentalRequest rentalDto) {
-        var result = await service.UpdateRentalAsync(id, rentalDto);
+        var result = await service.UpdateRentalAsync(id, rentalDto.ToDomain());
         if (result is null) return NotFound();
         return result.ToDto();
     }

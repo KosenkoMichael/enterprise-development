@@ -48,7 +48,7 @@ public class VehiclesController(VehicleService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Create([FromBody] VehicleRequest vehicleDto)
     {
-        var result = await service.CreateVehicleAsync(vehicleDto);
+        var result = await service.CreateVehicleAsync(vehicleDto.ToDomain());
         return CreatedAtAction(nameof(GetById), new { id = result }, null);
     }
 
@@ -63,7 +63,7 @@ public class VehiclesController(VehicleService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<VehicleDto>> Update(Guid id, [FromBody] VehicleRequest vehicleDto) {
-        var result = await service.UpdateVehicleAsync(id, vehicleDto);
+        var result = await service.UpdateVehicleAsync(id, vehicleDto.ToDomain());
         if (result is null) return NotFound();
         return result.ToDto();
     }
