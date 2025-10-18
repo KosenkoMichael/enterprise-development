@@ -67,7 +67,8 @@ public class ModelGenerationService(
     /// </summary>
     /// <param name="id">id of model generation</param>
     /// <returns>Vehicle model</returns>
-    public async Task<VehicleModel?> GetRelatedVehicleModel(Guid id) {
+    public async Task<VehicleModel?> GetRelatedVehicleModel(Guid id)
+    {
         var modelGeneration = await modelGenerationRepository.ReadAsync(id);
         return await vehicleModelRepository.ReadAsync(modelGeneration!.VehicleModelId);
     }

@@ -1,7 +1,6 @@
 ﻿using CarRentalService.Core.Domain.Service;
 using CarRentalService.WebApplication.Dto;
 using CarRentalService.WebApplication.Mappers;
-using CarRentalService.WebApplication.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarRentalService.WebApplication.Controllers;
@@ -25,7 +24,7 @@ public class VehiclesController(IVehicleService service, ILogger<AnalyticsContro
     public async Task<VehicleCollectionResponse> GetAll()
     {
         logger.LogInformation("called GetAll in VehiclesController");
-        return  (await service.GetVehiclesAsync()).ToResponse();
+        return (await service.GetVehiclesAsync()).ToResponse();
     }
     /// <summary>
     /// Retrieves a specific vehicle by unique identifier.
