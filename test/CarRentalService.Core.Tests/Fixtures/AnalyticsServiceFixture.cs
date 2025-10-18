@@ -1,9 +1,8 @@
-﻿using CarRentalService.WebApplication.Services;
+﻿using CarRentalService.Core.Domain.DataSeed;
 using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
-using CarRentalService.Core.Domain.DataSeed;
+using CarRentalService.WebApplication.Services;
 using Moq;
-using CarRentalService.WebApplication.Dto;
 
 namespace CarRentalService.Core.Tests.Fixtures;
 
@@ -12,7 +11,7 @@ namespace CarRentalService.Core.Tests.Fixtures;
 /// </summary>
 public class AnalyticsServiceFixture
 {
-    
+
     /// <summary>
     /// Service instance with mocked dependencies.
     /// </summary>

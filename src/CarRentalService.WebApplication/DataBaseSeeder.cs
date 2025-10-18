@@ -1,7 +1,6 @@
-﻿using CarRentalService.Core.Domain.Models;
-using CarRentalService.Core.Domain.DataSeed;
+﻿using CarRentalService.Core.Domain.DataSeed;
+using CarRentalService.Core.Domain.Models;
 using MongoDB.Driver;
-using CarRentalService.WebApplication.Dto;
 
 namespace CarRentalService.WebApplication;
 /// <summary>

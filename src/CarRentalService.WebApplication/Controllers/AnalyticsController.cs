@@ -1,8 +1,7 @@
-﻿using CarRentalService.WebApplication.Services;
-using CarRentalService.Core.Domain.Models;
-using Microsoft.AspNetCore.Mvc;
-using CarRentalService.WebApplication.Dto;
+﻿using CarRentalService.WebApplication.Dto;
 using CarRentalService.WebApplication.Mappers;
+using CarRentalService.WebApplication.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CarRentalService.WebApplication.Controllers;
 
@@ -76,7 +75,7 @@ public class AnalyticsController(AnalyticsService service) : ControllerBase
     public async Task<ActionResult<CustomerTotalSpentCollectionResponse>> GetTopCustomersByRentalSum()
     {
         var result = (await service.GetTopCustomersByRentalSumAsync())
-            .Select(x => new CustomerTotalSpentDto(x.Customer.ToDto(), x.TotalSpent ))
+            .Select(x => new CustomerTotalSpentDto(x.Customer.ToDto(), x.TotalSpent))
             .ToList();
 
         return result.ToResponse();

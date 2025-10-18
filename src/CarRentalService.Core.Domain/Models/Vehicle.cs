@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace CarRentalService.Core.Domain.Models;
+﻿namespace CarRentalService.Core.Domain.Models;
 /// <summary>
 /// Represents a vehicle in the car rental system.
 /// </summary>

@@ -32,7 +32,8 @@ public class VehicleModelsController(VehicleModelService service) : ControllerBa
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<VehicleModelDto>> GetById(Guid id) {
+    public async Task<ActionResult<VehicleModelDto>> GetById(Guid id)
+    {
         var result = await service.GetVehicleModel(id);
         if (result is null) return NotFound();
         return result.ToDto();
@@ -61,7 +62,8 @@ public class VehicleModelsController(VehicleModelService service) : ControllerBa
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<VehicleModelDto>> Update(Guid id, [FromBody] VehicleModelRequest vehicleModelDto) {
+    public async Task<ActionResult<VehicleModelDto>> Update(Guid id, [FromBody] VehicleModelRequest vehicleModelDto)
+    {
         var result = await service.UpdateVehicleModel(id, vehicleModelDto.ToDomain());
         if (result is null) return NotFound();
         return result.ToDto();

@@ -1,15 +1,14 @@
-using CarRentalService.WebApplication.Services;
 using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
+using CarRentalService.Core.Domain.Service;
 using CarRentalService.Infrastructure.Repositories;
 using CarRentalService.WebApplication;
+using CarRentalService.WebApplication.Services;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using System.Reflection;
 using System.Text.Json.Serialization;
-using CarRentalService.WebApplication.Dto;
-using CarRentalService.Core.Domain.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 

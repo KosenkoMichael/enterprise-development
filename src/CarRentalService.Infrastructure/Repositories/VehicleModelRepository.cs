@@ -6,7 +6,7 @@ namespace CarRentalService.Infrastructure.Repositories;
 /// <summary>
 /// Repository implementation for managing <see cref="VehicleModel"/> entities using MongoDB.
 /// </summary>
-public class VehicleModelRepository: IRepository<VehicleModel>
+public class VehicleModelRepository : IRepository<VehicleModel>
 {
     private readonly IMongoDatabase _database;
     private readonly IMongoCollection<VehicleModel> _collection;
@@ -38,11 +38,11 @@ public class VehicleModelRepository: IRepository<VehicleModel>
     /// <inheritdoc/>
     public async Task<List<VehicleModel>> ReadAllAsync() =>
         await (await _collection.FindAsync(Builders<VehicleModel>.Filter.Empty)).ToListAsync();
-    
+
     /// <inheritdoc/>
     public async Task<VehicleModel?> ReadAsync(Guid id) =>
         await _collection.Find(vm => vm.Id == id).FirstOrDefaultAsync();
-    
+
     /// <inheritdoc/>
     public async Task<VehicleModel?> UpdateAsync(Guid id, VehicleModel entity)
     {

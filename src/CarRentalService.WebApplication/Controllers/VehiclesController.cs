@@ -1,7 +1,6 @@
 ﻿using CarRentalService.WebApplication.Dto;
 using CarRentalService.WebApplication.Mappers;
 using CarRentalService.WebApplication.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarRentalService.WebApplication.Controllers;
@@ -33,7 +32,8 @@ public class VehiclesController(VehicleService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<VehicleDto>> GetById(Guid id) {
+    public async Task<ActionResult<VehicleDto>> GetById(Guid id)
+    {
         var result = await service.GetVehicleAsync(id);
         if (result is null) return NotFound();
         return result.ToDto();
@@ -62,7 +62,8 @@ public class VehiclesController(VehicleService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<VehicleDto>> Update(Guid id, [FromBody] VehicleRequest vehicleDto) {
+    public async Task<ActionResult<VehicleDto>> Update(Guid id, [FromBody] VehicleRequest vehicleDto)
+    {
         var result = await service.UpdateVehicleAsync(id, vehicleDto.ToDomain());
         if (result is null) return NotFound();
         return result.ToDto();

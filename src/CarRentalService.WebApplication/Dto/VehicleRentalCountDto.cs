@@ -1,6 +1,4 @@
-﻿using CarRentalService.Core.Domain.Models;
-
-namespace CarRentalService.WebApplication.Dto;
+﻿namespace CarRentalService.WebApplication.Dto;
 
 /// <summary>
 /// Dto for top N vehicles

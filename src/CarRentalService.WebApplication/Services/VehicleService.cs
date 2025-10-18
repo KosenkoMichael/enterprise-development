@@ -1,8 +1,6 @@
 ﻿using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
 using CarRentalService.Core.Domain.Service;
-using CarRentalService.WebApplication.Dto;
-using CarRentalService.WebApplication.Mappers;
 
 namespace CarRentalService.WebApplication.Services;
 

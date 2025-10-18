@@ -1,8 +1,7 @@
 ﻿using CarRentalService.WebApplication.Dto;
-using CarRentalService.WebApplication.Services;
-using CarRentalService.Core.Domain.Models;
-using Microsoft.AspNetCore.Mvc;
 using CarRentalService.WebApplication.Mappers;
+using CarRentalService.WebApplication.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CarRentalService.WebApplication.Controllers;
 
@@ -48,9 +47,10 @@ public class CustomersController(CustomerService service) : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> Create([FromBody] CustomerRequest customerDto) {
+    public async Task<ActionResult> Create([FromBody] CustomerRequest customerDto)
+    {
         var result = await service.CreateCustomerAsync(customerDto.ToDomain());
-        return CreatedAtAction(nameof(GetById), new {id = result}, null);
+        return CreatedAtAction(nameof(GetById), new { id = result }, null);
     }
     /// <summary>
     /// Updates an existing customer.

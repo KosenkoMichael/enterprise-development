@@ -32,7 +32,8 @@ public class ModelGenerationsController(ModelGenerationService service) : Contro
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<ModelGenerationDto>> GetById(Guid id) {
+    public async Task<ActionResult<ModelGenerationDto>> GetById(Guid id)
+    {
         var result = await service.GetModelGenerationAsync(id);
         if (result is null) return NotFound();
         return result.ToDto();
@@ -61,7 +62,8 @@ public class ModelGenerationsController(ModelGenerationService service) : Contro
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<ModelGenerationDto>> Update(Guid id, [FromBody] ModelGenerationRequest modelGenerationDto) {
+    public async Task<ActionResult<ModelGenerationDto>> Update(Guid id, [FromBody] ModelGenerationRequest modelGenerationDto)
+    {
         var result = await service.UpdateModelGenerationAsync(id, modelGenerationDto.ToDomain());
         if (result is null) return NotFound();
         return result.ToDto();

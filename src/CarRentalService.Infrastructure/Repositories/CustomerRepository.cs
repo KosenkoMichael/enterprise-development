@@ -6,7 +6,7 @@ namespace CarRentalService.Infrastructure.Repositories;
 /// <summary>
 /// Repository implementation for managing <see cref="Customer"/> entities using MongoDB.
 /// </summary>
-public class CustomerRepository: IRepository<Customer>
+public class CustomerRepository : IRepository<Customer>
 {
     private readonly IMongoDatabase _database;
     private readonly IMongoCollection<Customer> _collection;

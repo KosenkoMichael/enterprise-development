@@ -1,7 +1,5 @@
-using CarRentalService.WebApplication.Services;
-using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Tests.Fixtures;
-using Xunit;
+using CarRentalService.WebApplication.Services;
 
 namespace CarRentalService.Core.Tests;
 
