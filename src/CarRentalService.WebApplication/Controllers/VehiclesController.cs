@@ -20,6 +20,7 @@ public class VehiclesController(VehicleService service) : ControllerBase
     /// <returns>A list of all vehicles.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<VehicleCollectionResponse> GetAll() =>
         (await service.GetVehiclesAsync()).ToResponse();
 
@@ -31,9 +32,12 @@ public class VehiclesController(VehicleService service) : ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<VehicleDto?> GetByIdAsync(Guid id) =>
-        (await service.GetVehicleAsync(id))?.ToDto();
-
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<VehicleDto>> GetById(Guid id) {
+        var result = await service.GetVehicleAsync(id);
+        if (result is null) return NotFound();
+        return result.ToDto();
+    }
     /// <summary>
     /// Creates a new vehicle.
     /// </summary>
@@ -41,8 +45,12 @@ public class VehiclesController(VehicleService service) : ControllerBase
     /// <returns>The unique identifier of the newly created vehicle.</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<Guid> Create([FromBody] VehicleRequest vehicleDto) =>
-        await service.CreateVehicleAsync(vehicleDto);
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult> Create([FromBody] VehicleRequest vehicleDto)
+    {
+        var result = await service.CreateVehicleAsync(vehicleDto);
+        return CreatedAtAction(nameof(GetById), new { id = result }, null);
+    }
 
     /// <summary>
     /// Updates an existing vehicle.
@@ -53,9 +61,12 @@ public class VehiclesController(VehicleService service) : ControllerBase
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<VehicleDto?> Update(Guid id, [FromBody] VehicleRequest vehicleDto) =>
-        (await service.UpdateVehicleAsync(id, vehicleDto))?.ToDto();
-
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<VehicleDto>> Update(Guid id, [FromBody] VehicleRequest vehicleDto) {
+        var result = await service.UpdateVehicleAsync(id, vehicleDto);
+        if (result is null) return NotFound();
+        return result.ToDto();
+    }
     /// <summary>
     /// Deletes a vehicle by unique identifier.
     /// </summary>
@@ -63,7 +74,7 @@ public class VehiclesController(VehicleService service) : ControllerBase
     /// <returns>True if deletion was successful; otherwise, false.</returns>
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<bool> Delete(Guid id) =>
         await service.DeleteVehicleAsync(id);
 }

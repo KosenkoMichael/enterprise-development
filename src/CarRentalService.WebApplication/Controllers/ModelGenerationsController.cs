@@ -19,6 +19,7 @@ public class ModelGenerationsController(ModelGenerationService service) : Contro
     /// <returns>A list of all model generations.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ModelGenerationCollectionResponse> GetAll() =>
         (await service.GetModelGenerationsAsync()).ToResponse();
 
@@ -30,9 +31,12 @@ public class ModelGenerationsController(ModelGenerationService service) : Contro
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ModelGenerationDto?> GetByIdAsync(Guid id) =>
-        (await service.GetModelGenerationAsync(id))?.ToDto();
-
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<ModelGenerationDto>> GetById(Guid id) {
+        var result = await service.GetModelGenerationAsync(id);
+        if (result is null) return NotFound();
+        return result.ToDto();
+    }
     /// <summary>
     /// Creates a new model generation.
     /// </summary>
@@ -40,8 +44,12 @@ public class ModelGenerationsController(ModelGenerationService service) : Contro
     /// <returns>The unique identifier of the newly created model generation.</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<Guid> Create([FromBody] ModelGenerationRequest modelGenerationDto) =>
-        await service.CreateModelGenerationAsync(modelGenerationDto);
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult> Create([FromBody] ModelGenerationRequest modelGenerationDto)
+    {
+        var result = await service.CreateModelGenerationAsync(modelGenerationDto);
+        return CreatedAtAction(nameof(GetById), new { id = result }, null);
+    }
 
     /// <summary>
     /// Updates an existing model generation.
@@ -52,9 +60,12 @@ public class ModelGenerationsController(ModelGenerationService service) : Contro
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ModelGenerationDto?> Update(Guid id, [FromBody] ModelGenerationRequest modelGenerationDto) =>
-        (await service.UpdateModelGenerationAsync(id, modelGenerationDto))?.ToDto();
-
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<ModelGenerationDto>> Update(Guid id, [FromBody] ModelGenerationRequest modelGenerationDto) {
+        var result = await service.UpdateModelGenerationAsync(id, modelGenerationDto);
+        if (result is null) return NotFound();
+        return result.ToDto();
+    }
     /// <summary>
     /// Deletes a model generation by unique identifier.
     /// </summary>
@@ -62,7 +73,7 @@ public class ModelGenerationsController(ModelGenerationService service) : Contro
     /// <returns>True if deletion was successful; otherwise, false.</returns>
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<bool> Delete(Guid id) =>
         await service.DeleteModelGenerationAsync(id);
 }

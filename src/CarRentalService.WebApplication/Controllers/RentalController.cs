@@ -20,6 +20,7 @@ public class RentalsController(RentalService service) : ControllerBase
     /// <returns>A list of all rentals.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<RentalCollectionResponse> GetAll() =>
         (await service.GetRentalsAsync()).ToResponse();
 
@@ -31,9 +32,12 @@ public class RentalsController(RentalService service) : ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<RentalDto?> GetByIdAsync(Guid id) =>
-        (await service.GetRentalAsync(id))?.ToDto();
-
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<RentalDto>> GetById(Guid id) {
+        var result = await service.GetRentalAsync(id);
+        if (result is null) return NotFound();
+        return result.ToDto();
+    }
     /// <summary>
     /// Creates a new rental.
     /// </summary>
@@ -41,8 +45,12 @@ public class RentalsController(RentalService service) : ControllerBase
     /// <returns>The unique identifier of the newly created rental.</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<Guid> Create([FromBody] RentalRequest rentalDto) =>
-        await service.CreateRentalAsync(rentalDto);
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult> Create([FromBody] RentalRequest rentalDto)
+    {
+        var result = await service.CreateRentalAsync(rentalDto);
+        return CreatedAtAction(nameof(GetById), new { id = result }, null);
+    }
 
     /// <summary>
     /// Updates an existing rental.
@@ -53,9 +61,12 @@ public class RentalsController(RentalService service) : ControllerBase
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<RentalDto?> Update(Guid id, [FromBody] RentalRequest rentalDto) =>
-        (await service.UpdateRentalAsync(id, rentalDto))?.ToDto();
-
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<RentalDto>> Update(Guid id, [FromBody] RentalRequest rentalDto) {
+        var result = await service.UpdateRentalAsync(id, rentalDto);
+        if (result is null) return NotFound();
+        return result.ToDto();
+    }
     /// <summary>
     /// Deletes a rental by unique identifier.
     /// </summary>
@@ -63,7 +74,7 @@ public class RentalsController(RentalService service) : ControllerBase
     /// <returns>True if deletion was successful; otherwise, false.</returns>
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<bool> Delete(Guid id) =>
         await service.DeleteRentalAsync(id);
 }

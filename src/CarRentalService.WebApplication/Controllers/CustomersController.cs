@@ -20,6 +20,7 @@ public class CustomersController(CustomerService service) : ControllerBase
     /// <returns>A list of all customers.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<CustomerCollectionResponse> GetAll() =>
         (await service.GetCustomersAsync()).ToResponse();
 
@@ -31,8 +32,13 @@ public class CustomersController(CustomerService service) : ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<CustomerDto?> GetById(Guid id) =>
-        (await service.GetCustomerAsync(id))?.ToDto();
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<CustomerDto>> GetById(Guid id)
+    {
+        var result = await service.GetCustomerAsync(id);
+        if (result is null) return NotFound();
+        return result.ToDto();
+    }
 
     /// <summary>
     /// Creates a new customer.
@@ -41,9 +47,11 @@ public class CustomersController(CustomerService service) : ControllerBase
     /// <returns>The unique identifier of the newly created customer.</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<Guid> Create([FromBody] CustomerRequest customerDto) =>
-        await service.CreateCustomerAsync(customerDto);
-
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult> Create([FromBody] CustomerRequest customerDto) {
+        var result = await service.CreateCustomerAsync(customerDto);
+        return CreatedAtAction(nameof(GetById), new {id = result}, null);
+    }
     /// <summary>
     /// Updates an existing customer.
     /// </summary>
@@ -53,8 +61,13 @@ public class CustomersController(CustomerService service) : ControllerBase
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<CustomerDto?> Update(Guid id, [FromBody] CustomerRequest customerDto) =>
-        (await service.UpdateCustomerAsync(id, customerDto))?.ToDto();
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<CustomerDto>> Update(Guid id, [FromBody] CustomerRequest customerDto)
+    {
+        var result = await service.UpdateCustomerAsync(id, customerDto);
+        if (result is null) return NotFound();
+        return result.ToDto();
+    }
 
     /// <summary>
     /// Deletes a customer by unique identifier.
@@ -63,7 +76,7 @@ public class CustomersController(CustomerService service) : ControllerBase
     /// <returns>True if deletion was successful; otherwise, false.</returns>
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<bool> Delete(Guid id) =>
         await service.DeleteCustomerAsync(id);
 }
