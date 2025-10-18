@@ -33,19 +33,19 @@ public class RentalService(
     /// </summary>
     /// <param name="entity">The DTO containing rental information.</param>
     /// <returns>The unique identifier of the newly created rental.</returns>
-    /// <exception cref="Exception">
+    /// <exception cref="KeyNotFoundException">
     /// Thrown if the specified customer or vehicle does not exist.
     /// </exception>
     public async Task<Guid> CreateRentalAsync(RentalDto entity)
     {
         if (await customerRepository.ReadAsync(entity.CustomerId) is null)
         {
-            throw new Exception($"Customer with Id = {entity.CustomerId} does not found");
+            throw new KeyNotFoundException($"Customer with Id = {entity.CustomerId} does not found");
         }
 
         if (await vehicleRepository.ReadAsync(entity.VehicleId) is null)
         {
-            throw new Exception($"Vehicle with Id = {entity.VehicleId} does not found");
+            throw new KeyNotFoundException($"Vehicle with Id = {entity.VehicleId} does not found");
         }
 
         return await rentalRepository.CreateAsync(MapDto(entity));

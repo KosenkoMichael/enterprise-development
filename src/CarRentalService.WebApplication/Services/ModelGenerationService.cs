@@ -31,12 +31,12 @@ public class ModelGenerationService(
     /// </summary>
     /// <param name="entity">The DTO containing the model generation data.</param>
     /// <returns>The unique identifier of the newly created model generation.</returns>
-    /// <exception cref="Exception">Thrown if the specified vehicle model does not exist.</exception>
+    /// <exception cref="KeyNotFoundException">Thrown if the specified vehicle model does not exist.</exception>
     public async Task<Guid> CreateModelGenerationAsync(ModelGenerationDto entity)
     {
         if (await vehicleModelRepository.ReadAsync(entity.VehicleModelId) is null)
         {
-            throw new Exception($"VehicleModel with Id = {entity.VehicleModelId} does not exist");
+            throw new KeyNotFoundException($"VehicleModel with Id = {entity.VehicleModelId} does not exist");
         }
 
         return await modelGenerationRepository.CreateAsync(MapDto(entity));
