@@ -1,12 +1,12 @@
 ﻿using CarRentalService.Core.Domain.Models;
 using System.Drawing;
 
-namespace CarRentalService.Core.Domain.TestData;
+namespace CarRentalService.Core.Domain.DataSeed;
 
 /// <summary>
 /// Test data generator for the car rental system.
 /// </summary>
-public class TestDataGenerator
+public class DataSeeder
 {
     /// <summary>
     /// Generates test data for the car rental system, including vehicle models, model generations, vehicles, customers, and rentals.
