@@ -6,33 +6,10 @@ namespace CarRentalService.WebApplication.Dto;
 /// <summary>
 /// Represents a vehicle model in the car rental system.
 /// </summary>
-public class VehicleModelDto
-{
-
-    /// <summary>
-    /// The name of the vehicle model.
-    /// </summary>
-    public required string Name { get; set; }
-
-    /// <summary>
-    /// The drive type (e.g., front-wheel, rear-wheel, all-wheel) of the vehicle model.
-    /// </summary>
-    public required DriveType DriveType { get; set; }
-
-
-    /// <summary>
-    /// The number of seats in the vehicle model.
-    /// </summary>
-    public required int SeatCount { get; set; }
-
-    /// <summary>
-    /// The body type (e.g., sedan, SUV, hatchback) of the vehicle model.
-    /// </summary>
-    public required BodyType BodyType { get; set; }
-
-    /// <summary>
-    /// The vehicle class (e.g., economy, luxury, premium) of the vehicle model.
-    /// </summary>
-    public required VehicleClass Class { get; set; }
-}
-
+/// <param name="Id"> Unique identifier for the vehicle model. </param>
+/// <param name="Name"> Vehicle model name (e.g., "Toyota Camry"). </param>
+/// <param name="DriveType"> Drive type of the vehicle (e.g., "FWD", "RWD", "AWD"). </param>
+/// <param name="SeatCount"> Seat count of the vehicle. </param>
+/// <param name="BodyType"> Body type of the vehicle (e.g., "Sedan", "SUV"). </param>
+/// <param name="Class"> Vehicle class (e.g., "Economy", "Luxury"). </param>
+public record VehicleModelDto(Guid Id, string Name, DriveType DriveType, int SeatCount, BodyType BodyType, VehicleClass Class);

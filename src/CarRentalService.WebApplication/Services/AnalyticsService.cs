@@ -1,5 +1,6 @@
 ﻿using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
+using CarRentalService.WebApplication.Dto;
 
 namespace CarRentalService.WebApplication.Services;
 

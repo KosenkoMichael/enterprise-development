@@ -1,6 +1,7 @@
 ﻿using CarRentalService.WebApplication.Dto;
 using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
+using CarRentalService.WebApplication.Mappers;
 
 namespace CarRentalService.WebApplication.Services;
 
@@ -10,23 +11,13 @@ namespace CarRentalService.WebApplication.Services;
 /// <param name="repository">The repository used for customer data access.</param>
 public class CustomerService(IRepository<Customer> repository)
 {
-    private static Customer MapDto(CustomerDto entity)
-    {
-        return new Customer
-        {
-            DriverLicenseNumber = entity.DriverLicenseNumber,
-            FullName = entity.FullName,
-            DateOfBirth = entity.DateOfBirth
-        };
-    }
-
     /// <summary>
     /// Creates a new customer in the system.
     /// </summary>
     /// <param name="entity">The data transfer object containing customer information.</param>
     /// <returns>The unique identifier of the newly created customer.</returns>
-    public async Task<Guid> CreateCustomerAsync(CustomerDto entity) =>
-        await repository.CreateAsync(MapDto(entity));
+    public async Task<Guid> CreateCustomerAsync(CustomerRequest entity) =>
+        await repository.CreateAsync(entity.ToDomain());
 
     /// <summary>
     /// Retrieves all customers from the system.
@@ -49,8 +40,8 @@ public class CustomerService(IRepository<Customer> repository)
     /// <param name="id">The unique identifier of the customer to update.</param>
     /// <param name="entity">The data transfer object containing updated customer information.</param>
     /// <returns>The updated customer if successful; otherwise, null.</returns>
-    public async Task<Customer?> UpdateCustomerAsync(Guid id, CustomerDto entity) =>
-        await repository.UpdateAsync(id, MapDto(entity));
+    public async Task<Customer?> UpdateCustomerAsync(Guid id, CustomerRequest entity) =>
+        await repository.UpdateAsync(id, entity.ToDomain());
 
     /// <summary>
     /// Deletes a customer from the system.

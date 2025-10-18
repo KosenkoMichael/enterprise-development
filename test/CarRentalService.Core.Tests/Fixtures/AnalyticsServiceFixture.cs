@@ -3,6 +3,7 @@ using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
 using CarRentalService.Core.Domain.DataSeed;
 using Moq;
+using CarRentalService.WebApplication.Dto;
 
 namespace CarRentalService.Core.Tests.Fixtures;
 

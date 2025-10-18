@@ -5,21 +5,8 @@ namespace CarRentalService.WebApplication.Dto;
 /// <summary>
 /// Represents a vehicle in the car rental system.
 /// </summary>
-public class VehicleDto
-{
-
-    /// <summary>
-    /// The unique identifier of the model generation this vehicle belongs to.
-    /// </summary>
-    public required Guid ModelGenerationId { get; set; }
-
-    /// <summary>
-    /// The license plate number of the vehicle.
-    /// </summary>
-    public required string LicensePlate { get; set; }
-
-    /// <summary>
-    /// The color of the vehicle.
-    /// </summary>
-    public required string Color { get; set; }
-}
+/// <param name="Id"> Unique identifier for the vehicle. </param>
+/// <param name="ModelGenerationId"> Generation ID associated with this Vehicle. </param>
+/// <param name="LicensePlate"> License plate number of the vehicle. </param>
+/// <param name="Color"> Color of the vehicle. </param>
+public record VehicleDto(Guid Id, Guid ModelGenerationId, string LicensePlate, string Color);

@@ -1,6 +1,7 @@
 ﻿using CarRentalService.WebApplication.Dto;
-using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
+using CarRentalService.Core.Domain.Models;
+using CarRentalService.WebApplication.Mappers;
 
 namespace CarRentalService.WebApplication.Services;
 
@@ -14,32 +15,20 @@ public class ModelGenerationService(
     IRepository<VehicleModel> vehicleModelRepository
     )
 {
-    private static ModelGeneration MapDto(ModelGenerationDto entity)
-    {
-        return new ModelGeneration
-        {
-            Year = entity.Year,
-            EngineVolume = entity.EngineVolume,
-            TransmissionType = entity.TransmissionType,
-            VehicleModelId = entity.VehicleModelId,
-            RentalPricePerHour = entity.RentalPricePerHour
-        };
-    }
-
     /// <summary>
     /// Creates a new model generation for a vehicle model.
     /// </summary>
     /// <param name="entity">The DTO containing the model generation data.</param>
     /// <returns>The unique identifier of the newly created model generation.</returns>
     /// <exception cref="KeyNotFoundException">Thrown if the specified vehicle model does not exist.</exception>
-    public async Task<Guid> CreateModelGenerationAsync(ModelGenerationDto entity)
+    public async Task<Guid> CreateModelGenerationAsync(ModelGenerationRequest entity)
     {
         if (await vehicleModelRepository.ReadAsync(entity.VehicleModelId) is null)
         {
             throw new KeyNotFoundException($"VehicleModel with Id = {entity.VehicleModelId} does not exist");
         }
 
-        return await modelGenerationRepository.CreateAsync(MapDto(entity));
+        return await modelGenerationRepository.CreateAsync(entity.ToDomain());
     }
 
     /// <summary>
@@ -63,8 +52,8 @@ public class ModelGenerationService(
     /// <param name="id">The unique identifier of the model generation to update.</param>
     /// <param name="entity">The DTO containing updated model generation data.</param>
     /// <returns>The updated model generation if successful; otherwise, null.</returns>
-    public async Task<ModelGeneration?> UpdateModelGenerationAsync(Guid id, ModelGenerationDto entity) =>
-        await modelGenerationRepository.UpdateAsync(id, MapDto(entity));
+    public async Task<ModelGeneration?> UpdateModelGenerationAsync(Guid id, ModelGenerationRequest entity) =>
+        await modelGenerationRepository.UpdateAsync(id, entity.ToDomain());
 
     /// <summary>
     /// Deletes a model generation from the system.

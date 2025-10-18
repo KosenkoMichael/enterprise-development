@@ -1,6 +1,6 @@
 ﻿using CarRentalService.WebApplication.Dto;
+using CarRentalService.WebApplication.Mappers;
 using CarRentalService.WebApplication.Services;
-using CarRentalService.Core.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarRentalService.WebApplication.Controllers;
@@ -19,8 +19,8 @@ public class VehicleModelsController(VehicleModelService service) : ControllerBa
     /// <returns>A list of all vehicle models.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<VehicleModel>> GetAll() =>
-        await service.GetVehicleModels();
+    public async Task<VehicleModelCollectionResponse> GetAll() =>
+        (await service.GetVehicleModels()).ToResponse();
 
     /// <summary>
     /// Retrieves a specific vehicle model by unique identifier.
@@ -30,8 +30,8 @@ public class VehicleModelsController(VehicleModelService service) : ControllerBa
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<VehicleModel?> GetById(Guid id) =>
-        await service.GetVehicleModel(id);
+    public async Task<VehicleModelDto?> GetById(Guid id) =>
+        (await service.GetVehicleModel(id))?.ToDto();
 
     /// <summary>
     /// Creates a new vehicle model.
@@ -40,7 +40,7 @@ public class VehicleModelsController(VehicleModelService service) : ControllerBa
     /// <returns>The unique identifier of the newly created vehicle model.</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<Guid> Create([FromBody] VehicleModelDto vehicleModelDto) =>
+    public async Task<Guid> Create([FromBody] VehicleModelRequest vehicleModelDto) =>
         await service.CreateVehicleModel(vehicleModelDto);
 
     /// <summary>
@@ -52,8 +52,8 @@ public class VehicleModelsController(VehicleModelService service) : ControllerBa
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<VehicleModel?> Update(Guid id, [FromBody] VehicleModelDto vehicleModelDto) =>
-        await service.UpdateVehicleModel(id, vehicleModelDto);
+    public async Task<VehicleModelDto?> Update(Guid id, [FromBody] VehicleModelRequest vehicleModelDto) =>
+        (await service.UpdateVehicleModel(id, vehicleModelDto))?.ToDto();
 
     /// <summary>
     /// Deletes a vehicle model by unique identifier.

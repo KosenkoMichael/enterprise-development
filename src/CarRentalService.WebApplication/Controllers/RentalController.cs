@@ -1,6 +1,6 @@
 ﻿using CarRentalService.WebApplication.Dto;
+using CarRentalService.WebApplication.Mappers;
 using CarRentalService.WebApplication.Services;
-using CarRentalService.Core.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,8 +20,8 @@ public class RentalsController(RentalService service) : ControllerBase
     /// <returns>A list of all rentals.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<Rental>> GetAll() =>
-        await service.GetRentalsAsync();
+    public async Task<RentalCollectionResponse> GetAll() =>
+        (await service.GetRentalsAsync()).ToResponse();
 
     /// <summary>
     /// Retrieves a specific rental by unique identifier.
@@ -31,8 +31,8 @@ public class RentalsController(RentalService service) : ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Rental?> GetByIdAsync(Guid id) =>
-        await service.GetRentalAsync(id);
+    public async Task<RentalDto?> GetByIdAsync(Guid id) =>
+        (await service.GetRentalAsync(id))?.ToDto();
 
     /// <summary>
     /// Creates a new rental.
@@ -41,7 +41,7 @@ public class RentalsController(RentalService service) : ControllerBase
     /// <returns>The unique identifier of the newly created rental.</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<Guid> Create([FromBody] RentalDto rentalDto) =>
+    public async Task<Guid> Create([FromBody] RentalRequest rentalDto) =>
         await service.CreateRentalAsync(rentalDto);
 
     /// <summary>
@@ -53,8 +53,8 @@ public class RentalsController(RentalService service) : ControllerBase
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Rental?> Update(Guid id, [FromBody] RentalDto rentalDto) =>
-        await service.UpdateRentalAsync(id, rentalDto);
+    public async Task<RentalDto?> Update(Guid id, [FromBody] RentalRequest rentalDto) =>
+        (await service.UpdateRentalAsync(id, rentalDto))?.ToDto();
 
     /// <summary>
     /// Deletes a rental by unique identifier.

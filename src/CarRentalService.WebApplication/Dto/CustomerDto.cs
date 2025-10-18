@@ -1,23 +1,10 @@
 ﻿namespace CarRentalService.WebApplication.Dto;
 
 /// <summary>
-/// Represents a customer in the car rental system.
+///  Represents a customer in the car rental system.
 /// </summary>
-public class CustomerDto
-{
-
-    /// <summary>
-    /// The unique driver's license number of the customer.
-    /// </summary>
-    public required string DriverLicenseNumber { get; set; }
-
-    /// <summary>
-    /// The full name of the customer.
-    /// </summary>
-    public required string FullName { get; set; }
-
-    /// <summary>
-    /// The date of birth of the customer.
-    /// </summary>
-    public required DateTime DateOfBirth { get; set; }
-}
+/// <param name="Id"> Unique identifier for the customer. </param>
+/// <param name="DriverLicenseNumber"> Driver's license number of the customer. </param>
+/// <param name="FullName"> Full name of the customer. </param>
+/// <param name="DateOfBirth"> Date of birth of the customer. </param>
+public record CustomerDto(Guid Id, string DriverLicenseNumber, string FullName, DateTime DateOfBirth);

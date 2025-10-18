@@ -8,6 +8,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using CarRentalService.WebApplication.Dto;
 
 var builder = WebApplication.CreateBuilder(args);
 

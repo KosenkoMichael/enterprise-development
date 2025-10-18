@@ -1,6 +1,6 @@
 ﻿using CarRentalService.WebApplication.Dto;
+using CarRentalService.WebApplication.Mappers;
 using CarRentalService.WebApplication.Services;
-using CarRentalService.Core.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarRentalService.WebApplication.Controllers;
@@ -19,8 +19,8 @@ public class ModelGenerationsController(ModelGenerationService service) : Contro
     /// <returns>A list of all model generations.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<ModelGeneration>> GetAll() =>
-        await service.GetModelGenerationsAsync();
+    public async Task<ModelGenerationCollectionResponse> GetAll() =>
+        (await service.GetModelGenerationsAsync()).ToResponse();
 
     /// <summary>
     /// Retrieves a specific model generation by unique identifier.
@@ -30,8 +30,8 @@ public class ModelGenerationsController(ModelGenerationService service) : Contro
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ModelGeneration?> GetByIdAsync(Guid id) =>
-        await service.GetModelGenerationAsync(id);
+    public async Task<ModelGenerationDto?> GetByIdAsync(Guid id) =>
+        (await service.GetModelGenerationAsync(id))?.ToDto();
 
     /// <summary>
     /// Creates a new model generation.
@@ -40,7 +40,7 @@ public class ModelGenerationsController(ModelGenerationService service) : Contro
     /// <returns>The unique identifier of the newly created model generation.</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<Guid> Create([FromBody] ModelGenerationDto modelGenerationDto) =>
+    public async Task<Guid> Create([FromBody] ModelGenerationRequest modelGenerationDto) =>
         await service.CreateModelGenerationAsync(modelGenerationDto);
 
     /// <summary>
@@ -52,8 +52,8 @@ public class ModelGenerationsController(ModelGenerationService service) : Contro
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ModelGeneration?> Update(Guid id, [FromBody] ModelGenerationDto modelGenerationDto) =>
-        await service.UpdateModelGenerationAsync(id, modelGenerationDto);
+    public async Task<ModelGenerationDto?> Update(Guid id, [FromBody] ModelGenerationRequest modelGenerationDto) =>
+        (await service.UpdateModelGenerationAsync(id, modelGenerationDto))?.ToDto();
 
     /// <summary>
     /// Deletes a model generation by unique identifier.

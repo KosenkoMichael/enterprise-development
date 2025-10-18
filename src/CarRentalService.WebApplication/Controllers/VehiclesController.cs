@@ -1,6 +1,6 @@
 ﻿using CarRentalService.WebApplication.Dto;
+using CarRentalService.WebApplication.Mappers;
 using CarRentalService.WebApplication.Services;
-using CarRentalService.Core.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,8 +20,8 @@ public class VehiclesController(VehicleService service) : ControllerBase
     /// <returns>A list of all vehicles.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<Vehicle>> GetAll() =>
-        await service.GetVehiclesAsync();
+    public async Task<VehicleCollectionResponse> GetAll() =>
+        (await service.GetVehiclesAsync()).ToResponse();
 
     /// <summary>
     /// Retrieves a specific vehicle by unique identifier.
@@ -31,8 +31,8 @@ public class VehiclesController(VehicleService service) : ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Vehicle?> GetByIdAsync(Guid id) =>
-        await service.GetVehicleAsync(id);
+    public async Task<VehicleDto?> GetByIdAsync(Guid id) =>
+        (await service.GetVehicleAsync(id))?.ToDto();
 
     /// <summary>
     /// Creates a new vehicle.
@@ -41,7 +41,7 @@ public class VehiclesController(VehicleService service) : ControllerBase
     /// <returns>The unique identifier of the newly created vehicle.</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<Guid> Create([FromBody] VehicleDto vehicleDto) =>
+    public async Task<Guid> Create([FromBody] VehicleRequest vehicleDto) =>
         await service.CreateVehicleAsync(vehicleDto);
 
     /// <summary>
@@ -53,8 +53,8 @@ public class VehiclesController(VehicleService service) : ControllerBase
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Vehicle?> Update(Guid id, [FromBody] VehicleDto vehicleDto) =>
-        await service.UpdateVehicleAsync(id, vehicleDto);
+    public async Task<VehicleDto?> Update(Guid id, [FromBody] VehicleRequest vehicleDto) =>
+        (await service.UpdateVehicleAsync(id, vehicleDto))?.ToDto();
 
     /// <summary>
     /// Deletes a vehicle by unique identifier.

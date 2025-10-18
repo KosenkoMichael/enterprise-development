@@ -1,6 +1,7 @@
-﻿using CarRentalService.WebApplication.Dto;
-using CarRentalService.Core.Domain.Models;
+﻿using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
+using CarRentalService.WebApplication.Dto;
+using CarRentalService.WebApplication.Mappers;
 
 namespace CarRentalService.WebApplication.Services;
 
@@ -10,25 +11,13 @@ namespace CarRentalService.WebApplication.Services;
 /// <param name="repository">Repository for accessing vehicle model data.</param>
 public class VehicleModelService(IRepository<VehicleModel> repository)
 {
-    private static VehicleModel MapDto(VehicleModelDto entity)
-    {
-        return new VehicleModel
-        {
-            Name = entity.Name,
-            DriveType = entity.DriveType,
-            SeatCount = entity.SeatCount,
-            BodyType = entity.BodyType,
-            Class = entity.Class
-        };
-    }
-
     /// <summary>
     /// Creates a new vehicle model.
     /// </summary>
     /// <param name="entity">The DTO containing vehicle model information.</param>
     /// <returns>The unique identifier of the newly created vehicle model.</returns>
-    public async Task<Guid> CreateVehicleModel(VehicleModelDto entity) =>
-        await repository.CreateAsync(MapDto(entity));
+    public async Task<Guid> CreateVehicleModel(VehicleModelRequest entity) =>
+        await repository.CreateAsync(entity.ToDomain());
 
     /// <summary>
     /// Retrieves all vehicle models from the system.
@@ -51,8 +40,8 @@ public class VehicleModelService(IRepository<VehicleModel> repository)
     /// <param name="id">The unique identifier of the vehicle model to update.</param>
     /// <param name="entity">The DTO containing updated vehicle model information.</param>
     /// <returns>The updated vehicle model if successful; otherwise, null.</returns>
-    public async Task<VehicleModel?> UpdateVehicleModel(Guid id, VehicleModelDto entity) =>
-        await repository.UpdateAsync(id, MapDto(entity));
+    public async Task<VehicleModel?> UpdateVehicleModel(Guid id, VehicleModelRequest entity) =>
+        await repository.UpdateAsync(id, entity.ToDomain());
 
     /// <summary>
     /// Deletes a vehicle model from the system.

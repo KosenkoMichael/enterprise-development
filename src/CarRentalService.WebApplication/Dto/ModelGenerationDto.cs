@@ -5,31 +5,10 @@ namespace CarRentalService.WebApplication.Dto;
 /// <summary>
 /// Represents a specific generation of a vehicle model in the car rental system.
 /// </summary>
-public class ModelGenerationDto
-{
-
-    /// <summary>
-    /// The year this model generation was released.
-    /// </summary>
-    public required int Year { get; set; }
-
-    /// <summary>
-    /// The engine volume (in liters) of this model generation.
-    /// </summary>
-    public required double EngineVolume { get; set; }
-
-    /// <summary>
-    /// The type of transmission for this model generation.
-    /// </summary>
-    public required TransmissionType TransmissionType { get; set; }
-
-    /// <summary>
-    /// The unique identifier of the vehicle model this generation belongs to.
-    /// </summary>
-    public required Guid VehicleModelId { get; set; }
-
-    /// <summary>
-    /// The rental price per hour for this model generation.
-    /// </summary>
-    public required decimal RentalPricePerHour { get; set; }
-}
+/// <param name="Id"> Id of model generation. </param>
+/// <param name="Year"> Manufacturing year of the vehicle model generation. </param>
+/// <param name="EngineVolume"> Engine volume in liters. </param>
+/// <param name="TransmissionType"> Transmission type (e.g., Automatic, Manual). </param>
+/// <param name="VehicleModelId"> Vehicle model Id </param>
+/// <param name="RentalPricePerHour"> Cost to rent the vehicle per hour. </param>
+public record ModelGenerationDto(Guid Id, int Year, double EngineVolume, TransmissionType TransmissionType, Guid VehicleModelId, decimal RentalPricePerHour);

@@ -3,26 +3,10 @@
 /// <summary>
 /// Represents a rental transaction in the car rental system.
 /// </summary>
-public class RentalDto
-{
-
-    /// <summary>
-    /// The unique identifier of the rented vehicle.
-    /// </summary>
-    public required Guid VehicleId { get; set; }
-
-    /// <summary>
-    /// The unique identifier of the customer who rents the vehicle.
-    /// </summary>
-    public required Guid CustomerId { get; set; }
-
-    /// <summary>
-    /// The start time of the rental period.
-    /// </summary>
-    public required DateTime RentStartTime { get; set; }
-
-    /// <summary>
-    /// The duration of the rental in hours.
-    /// </summary>
-    public required double RentalDurationHours { get; set; }
-}
+/// <param name="Id"> Id of rental. </param>
+/// <param name="VehicleId"> Id of rented vehicle associated with this rental. </param>
+/// <param name="CustomerId"> Id of customer associated with this rental. </param>
+/// <param name="RentStartTime"> Start time of the rental period. </param>
+/// <param name="RentalDurationHours"> Duration of the rental in hours. </param>
+/// <param name="TotalCost"> Total cost of the rental, calculated based on duration and vehicle's rental price per hour. </param>
+public record RentalDto(Guid Id, Guid VehicleId, Guid CustomerId, DateTime RentStartTime, double RentalDurationHours, decimal TotalCost);

@@ -2,6 +2,7 @@
 using CarRentalService.WebApplication.Services;
 using CarRentalService.Core.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using CarRentalService.WebApplication.Mappers;
 
 namespace CarRentalService.WebApplication.Controllers;
 
@@ -19,8 +20,8 @@ public class CustomersController(CustomerService service) : ControllerBase
     /// <returns>A list of all customers.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<Customer>> GetAll() =>
-        await service.GetCustomersAsync();
+    public async Task<CustomerCollectionResponse> GetAll() =>
+        (await service.GetCustomersAsync()).ToResponse();
 
     /// <summary>
     /// Retrieves a specific customer by unique identifier.
@@ -30,8 +31,8 @@ public class CustomersController(CustomerService service) : ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Customer?> GetById(Guid id) =>
-        await service.GetCustomerAsync(id);
+    public async Task<CustomerDto?> GetById(Guid id) =>
+        (await service.GetCustomerAsync(id))?.ToDto();
 
     /// <summary>
     /// Creates a new customer.
@@ -40,7 +41,7 @@ public class CustomersController(CustomerService service) : ControllerBase
     /// <returns>The unique identifier of the newly created customer.</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<Guid> Create([FromBody] CustomerDto customerDto) =>
+    public async Task<Guid> Create([FromBody] CustomerRequest customerDto) =>
         await service.CreateCustomerAsync(customerDto);
 
     /// <summary>
@@ -52,8 +53,8 @@ public class CustomersController(CustomerService service) : ControllerBase
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Customer?> Update(Guid id, [FromBody] CustomerDto customerDto) =>
-        await service.UpdateCustomerAsync(id, customerDto);
+    public async Task<CustomerDto?> Update(Guid id, [FromBody] CustomerRequest customerDto) =>
+        (await service.UpdateCustomerAsync(id, customerDto))?.ToDto();
 
     /// <summary>
     /// Deletes a customer by unique identifier.

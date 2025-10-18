@@ -1,6 +1,7 @@
-﻿using CarRentalService.WebApplication.Dto;
-using CarRentalService.Core.Domain.Models;
+﻿using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
+using CarRentalService.WebApplication.Dto;
+using CarRentalService.WebApplication.Mappers;
 
 namespace CarRentalService.WebApplication.Services;
 
@@ -14,30 +15,20 @@ public class VehicleService(
     IRepository<ModelGeneration> modelGenerationRepository
     )
 {
-    private static Vehicle MapDto(VehicleDto entity)
-    {
-        return new Vehicle
-        {
-            ModelGenerationId = entity.ModelGenerationId,
-            LicensePlate = entity.LicensePlate,
-            Color = entity.Color
-        };
-    }
-
     /// <summary>
     /// Creates a new vehicle.
     /// </summary>
     /// <param name="entity">The DTO containing vehicle information.</param>
     /// <returns>The unique identifier of the newly created vehicle.</returns>
     /// <exception cref="KeyNotFoundException">Thrown if the specified model generation does not exist.</exception>
-    public async Task<Guid> CreateVehicleAsync(VehicleDto entity)
+    public async Task<Guid> CreateVehicleAsync(VehicleRequest entity)
     {
         if (await modelGenerationRepository.ReadAsync(entity.ModelGenerationId) is null)
         {
             throw new KeyNotFoundException($"ModelGeneration with Id = {entity.ModelGenerationId} does not found");
         }
 
-        return await vehicleRepository.CreateAsync(MapDto(entity));
+        return await vehicleRepository.CreateAsync(entity.ToDomain());
     }
 
     /// <summary>
@@ -61,8 +52,8 @@ public class VehicleService(
     /// <param name="id">The unique identifier of the vehicle to update.</param>
     /// <param name="entity">The DTO containing updated vehicle information.</param>
     /// <returns>The updated vehicle if successful; otherwise, null.</returns>
-    public async Task<Vehicle?> UpdateVehicleAsync(Guid id, VehicleDto entity) =>
-        await vehicleRepository.UpdateAsync(id, MapDto(entity));
+    public async Task<Vehicle?> UpdateVehicleAsync(Guid id, VehicleRequest entity) =>
+        await vehicleRepository.UpdateAsync(id, entity.ToDomain());
 
     /// <summary>
     /// Deletes a vehicle from the system.
