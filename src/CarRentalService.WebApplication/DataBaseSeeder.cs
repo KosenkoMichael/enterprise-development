@@ -7,16 +7,16 @@ namespace CarRentalService.WebApplication;
 /// Seeder for populating the MongoDB database with initial test data.
 /// </summary>
 
-public class DBSeeder : IHostedService
+public class DataBaseSeeder : IHostedService
 {
     private readonly IMongoClient _client;
     private readonly IMongoDatabase _database;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DBSeeder"/> class.
+    /// Initializes a new instance of the <see cref="DataBaseSeeder"/> class.
     /// </summary>
     /// <param name="client"></param>
-    public DBSeeder(IMongoClient client)
+    public DataBaseSeeder(IMongoClient client)
     {
         _client = client;
         _database = _client.GetDatabase("car-rental");

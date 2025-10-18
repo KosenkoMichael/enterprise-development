@@ -11,8 +11,6 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddControllers()
@@ -20,7 +18,7 @@ builder.Services.AddControllers()
         {
             options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -34,7 +32,7 @@ BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard
 
 builder.AddMongoDBClient("car-rental");
 
-builder.Services.AddHostedService<DBSeeder>();
+builder.Services.AddHostedService<DataBaseSeeder>();
 
 builder.Services.AddScoped<IRepository<Customer>, CustomerRepository>();
 builder.Services.AddScoped<CustomerService>();
@@ -55,7 +53,6 @@ builder.Services.AddScoped<AnalyticsService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
