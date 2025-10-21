@@ -28,4 +28,14 @@ public class Rental
     /// Total cost of the rental, calculated based on duration and vehicle's rental price per hour.
     /// </summary>
     public decimal TotalCost { get; set; }
+
+    /// <summary>
+    /// Navigation property to customer
+    /// </summary>
+    public Customer Customer { get; set; } = null!;
+
+    /// <summary>
+    /// Navigation property to vehicle
+    /// </summary>
+    public Vehicle Vehicle { get; set; } = null!;
 }

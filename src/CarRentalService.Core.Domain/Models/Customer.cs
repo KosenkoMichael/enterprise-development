@@ -20,4 +20,9 @@ public class Customer
     /// Date of birth of the customer.
     /// </summary>
     public required DateTime DateOfBirth { get; set; }
+
+    /// <summary>
+    /// Navigation property to rentals
+    /// </summary>
+    public ICollection<Rental> Rentals { get; set; } = null!;
 }

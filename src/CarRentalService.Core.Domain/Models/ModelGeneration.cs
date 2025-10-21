@@ -28,4 +28,14 @@ public class ModelGeneration
     /// Cost to rent the vehicle per hour.
     /// </summary>
     public required decimal RentalPricePerHour { get; set; }
+
+    /// <summary>
+    /// Navigation property to vehicle model
+    /// </summary>
+    public VehicleModel VehicleModel { get; set; } = null!;
+
+    /// <summary>
+    /// Navigation property to vehicles
+    /// </summary>
+    public ICollection<Vehicle> Vehicles { get; set; } = null!;
 }

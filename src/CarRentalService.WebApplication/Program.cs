@@ -1,12 +1,15 @@
 using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
 using CarRentalService.Core.Domain.Service;
+using CarRentalService.Infrastructure;
 using CarRentalService.Infrastructure.Repositories;
 using CarRentalService.WebApplication;
 using CarRentalService.WebApplication.Services;
+using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Driver;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
@@ -40,6 +43,12 @@ builder.Services.AddSwaggerGen(c =>
 BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
 builder.AddMongoDBClient("car-rental");
+
+builder.Services.AddDbContext<CarRentalDbContext>((services, o) =>
+{
+    var db = services.GetRequiredService<IMongoDatabase>();
+    o.UseMongoDB(db.Client, db.DatabaseNamespace.DatabaseName);
+});
 
 builder.Services.AddHostedService<DatabaseSeeder>();
 

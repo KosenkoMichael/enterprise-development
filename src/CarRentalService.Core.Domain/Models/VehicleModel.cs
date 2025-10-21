@@ -28,4 +28,8 @@ public class VehicleModel
     /// Vehicle class (e.g., "Economy", "Luxury").
     /// </summary>
     public required VehicleClass Class { get; set; }
+    /// <summary>
+    /// Navigation property to model generation
+    /// </summary>
+    public ICollection<ModelGeneration> ModelGenerations { get; set; } = null!;
 }

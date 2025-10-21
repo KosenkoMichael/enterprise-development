@@ -20,4 +20,14 @@ public class Vehicle
     /// Color of the vehicle.
     /// </summary>
     public required string Color { get; set; }
+
+    /// <summary>
+    /// Navigation property to model generation
+    /// </summary>
+    public ModelGeneration ModelGeneration { get; set; } = null!;
+
+    /// <summary>
+    /// Navigation property to rentals
+    /// </summary>
+    public ICollection<Rental> Rentals { get; set; } = null!;
 }
