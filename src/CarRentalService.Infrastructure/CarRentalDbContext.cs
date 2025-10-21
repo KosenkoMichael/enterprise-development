@@ -6,10 +6,10 @@ namespace CarRentalService.Infrastructure;
 public class CarRentalDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<VehicleModel> VehicleModels { get; set; }
-    public DbSet<ModelGeneration> ModelGeneration {  get; set; }
-    public DbSet<Vehicle> Vehicle {  get; set; }
-    public DbSet<Customer> Customer { get; set; }
-    public DbSet<Rental> Rental { get; set; }
+    public DbSet<ModelGeneration> ModelGenerations { get; set; }
+    public DbSet<Vehicle> Vehicles { get; set; }
+    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Rental> Rentals { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,5 +1,6 @@
 ﻿using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
+using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
 namespace CarRentalService.Infrastructure.Repositories;
@@ -8,60 +9,47 @@ namespace CarRentalService.Infrastructure.Repositories;
 /// Repository implementation for managing <see cref="Rental"/> entities using MongoDB.
 /// Calculates the total cost of rentals based on the vehicle's model generation rental price.
 /// </summary>
-public class RentalRepository : IRepository<Rental>
+public class RentalRepository(CarRentalDbContext dbContext) : IRepository<Rental>
 {
-    private readonly IMongoDatabase _database;
-    private readonly IMongoCollection<Rental> _rentalColection;
-    private readonly IMongoCollection<Vehicle> _vehicleCollection;
-    private readonly IMongoCollection<ModelGeneration> _modelGenerationCollection;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="RentalRepository"/> class.
-    /// </summary>
-    /// <param name="client">The MongoDB client used to access the database.</param>
-    public RentalRepository(IMongoClient client)
-    {
-        _database = client.GetDatabase("car-rental");
-        _rentalColection = _database.GetCollection<Rental>("rentals");
-        _vehicleCollection = _database.GetCollection<Vehicle>("vehicles");
-        _modelGenerationCollection = _database.GetCollection<ModelGeneration>("model-generations");
-    }
-
     /// <inheritdoc/>
     public async Task<Guid> CreateAsync(Rental entity)
     {
-        await _rentalColection.InsertOneAsync(entity);
+        dbContext.Rentals.Add(entity);
+        await dbContext.SaveChangesAsync();
         return entity.Id;
     }
 
     /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
-        var result = await _rentalColection.DeleteOneAsync(c => c.Id == id);
-        return result.DeletedCount > 0;
+        var result = await dbContext.Rentals.Where(x => x.Id == id).ExecuteDeleteAsync();
+        return result > 0;
     }
 
     /// <inheritdoc/>
     public async Task<List<Rental>> ReadAllAsync()
     {
-        var list = await (await _rentalColection.FindAsync(Builders<Rental>.Filter.Empty)).ToListAsync();
-        foreach (var rental in list)
+        var rentals = await dbContext.Rentals.ToListAsync();
+        foreach (var rental in rentals)
         {
-            var vehicle = await _vehicleCollection.Find(c => c.Id == rental.VehicleId).FirstOrDefaultAsync();
-            var modelGeneration = await _modelGenerationCollection.Find(c => c.Id == vehicle.ModelGenerationId).FirstOrDefaultAsync();
-
+            var vehicle = await dbContext.Vehicles.FirstOrDefaultAsync(x => x.Id == rental.VehicleId);
+            if (vehicle is null) continue;
+            var modelGeneration = await dbContext.ModelGenerations.FirstOrDefaultAsync(x => x.Id == vehicle.ModelGenerationId);
+            if (modelGeneration is null) continue;
             rental.TotalCost = (decimal)rental.RentalDurationHours * modelGeneration.RentalPricePerHour;
         }
-        return list;
-    }
 
+        return rentals;
+    }
     /// <inheritdoc/>
     public async Task<Rental?> ReadAsync(Guid id)
     {
-        var rental = await _rentalColection.Find(c => c.Id == id).FirstOrDefaultAsync();
-        var vehicle = await _vehicleCollection.Find(c => c.Id == rental.VehicleId).FirstOrDefaultAsync();
-        var modelGeneration = await _modelGenerationCollection.Find(c => c.Id == vehicle.ModelGenerationId).FirstOrDefaultAsync();
-
+        var rental = await dbContext.Rentals.FirstOrDefaultAsync(x => x.Id == id);
+        if (rental is null) return null;
+        var vehicle = await dbContext.Vehicles.FirstOrDefaultAsync(x => x.Id == rental.VehicleId);
+        if (vehicle is null) return null;
+        var modelGeneration = await dbContext.ModelGenerations.FirstOrDefaultAsync(x => x.Id == vehicle.ModelGenerationId);
+        if (modelGeneration is null) return null;
         rental.TotalCost = (decimal)rental.RentalDurationHours * modelGeneration.RentalPricePerHour;
 
         return rental;
@@ -70,6 +58,15 @@ public class RentalRepository : IRepository<Rental>
     /// <inheritdoc/>
     public async Task<Rental?> UpdateAsync(Guid id, Rental entity)
     {
-        return await _rentalColection.FindOneAndReplaceAsync(x => x.Id == id, entity);
+        var rental = await dbContext.Rentals.FirstOrDefaultAsync(x => x.Id == id);
+
+        if (rental == null) return null;
+
+        entity.Id = rental.Id;
+
+        dbContext.Rentals.Update(entity);
+
+        await dbContext.SaveChangesAsync();
+        return rental;
     }
 }

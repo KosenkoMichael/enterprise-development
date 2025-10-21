@@ -1,5 +1,6 @@
 ﻿using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
+using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
 namespace CarRentalService.Infrastructure.Repositories;
@@ -7,46 +8,39 @@ namespace CarRentalService.Infrastructure.Repositories;
 /// <summary>
 /// Repository implementation for managing <see cref="ModelGeneration"/> entities using MongoDB.
 /// </summary>
-public class ModelGenerationRepository : IRepository<ModelGeneration>
+public class ModelGenerationRepository(CarRentalDbContext dbContext) : IRepository<ModelGeneration>
 {
-    private readonly IMongoDatabase _database;
-    private readonly IMongoCollection<ModelGeneration> _collection;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ModelGenerationRepository"/> class.
-    /// </summary>
-    /// <param name="client">The MongoDB client used to access the database.</param>
-    public ModelGenerationRepository(IMongoClient client)
-    {
-        _database = client.GetDatabase("car-rental");
-        _collection = _database.GetCollection<ModelGeneration>("model-generations");
-    }
-
     /// <inheritdoc/>
     public async Task<Guid> CreateAsync(ModelGeneration entity)
     {
-        await _collection.InsertOneAsync(entity);
+        dbContext.ModelGenerations.Add(entity);
+        await dbContext.SaveChangesAsync();
         return entity.Id;
     }
-
     /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
-        var result = await _collection.DeleteOneAsync(c => c.Id == id);
-        return result.DeletedCount > 0;
+        var result = await dbContext.ModelGenerations.Where(x => x.Id == id).ExecuteDeleteAsync();
+        return result > 0;
     }
-
     /// <inheritdoc/>
     public async Task<List<ModelGeneration>> ReadAllAsync() =>
-         await (await _collection.FindAsync(Builders<ModelGeneration>.Filter.Empty)).ToListAsync();
-
+        await dbContext.ModelGenerations.ToListAsync();
     /// <inheritdoc/>
     public async Task<ModelGeneration?> ReadAsync(Guid id) =>
-        await _collection.Find(c => c.Id == id).FirstOrDefaultAsync();
-
+        await dbContext.ModelGenerations.FirstOrDefaultAsync(x => x.Id == id);
     /// <inheritdoc/>
     public async Task<ModelGeneration?> UpdateAsync(Guid id, ModelGeneration entity)
     {
-        return await _collection.FindOneAndReplaceAsync(x => x.Id == id, entity);
+        var modelGeneration = await dbContext.ModelGenerations.FirstOrDefaultAsync(x => x.Id == id);
+
+        if (modelGeneration == null) return null;
+
+        entity.Id = modelGeneration.Id;
+
+        dbContext.ModelGenerations.Update(entity);
+
+        await dbContext.SaveChangesAsync();
+        return modelGeneration;
     }
 }
