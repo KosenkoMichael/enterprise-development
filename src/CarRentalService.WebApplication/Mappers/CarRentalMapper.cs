@@ -2,7 +2,7 @@
 using CarRentalService.WebApplication.Dto;
 
 namespace CarRentalService.WebApplication.Mappers;
-internal static class CustomerMapper
+internal static class CarRentalMapper
 {
     public static CustomerDto ToDto(this Customer customer) => new(customer.Id, customer.DriverLicenseNumber,
                                                                     customer.FullName, customer.DateOfBirth);
