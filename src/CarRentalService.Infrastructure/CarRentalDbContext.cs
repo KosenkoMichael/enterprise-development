@@ -45,7 +45,7 @@ public class CarRentalDbContext(DbContextOptions options) : DbContext(options)
         });
 
         Database.AutoTransactionBehavior = AutoTransactionBehavior.Never;
-        modelBuilder.Entity<VehicleModel>().ToCollection("vehice-models");
+        modelBuilder.Entity<VehicleModel>().ToCollection("vehicle-models");
         modelBuilder.Entity<Customer>().ToCollection("customers");
     }
 }
