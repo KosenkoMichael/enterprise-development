@@ -1,3 +1,4 @@
+using CarRentalService.Core.Domain.DataSeed;
 using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
 using CarRentalService.Core.Domain.Service;
@@ -50,7 +51,8 @@ builder.Services.AddDbContext<CarRentalDbContext>((services, o) =>
     o.UseMongoDB(db.Client, db.DatabaseNamespace.DatabaseName);
 });
 
-builder.Services.AddHostedService<DatabaseSeeder>();
+builder.Services.AddSingleton<DbSeeder>();
+builder.Services.AddHostedService<DbSeedService>();
 
 builder.Services.AddScoped<IRepository<Customer>, CustomerRepository>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();

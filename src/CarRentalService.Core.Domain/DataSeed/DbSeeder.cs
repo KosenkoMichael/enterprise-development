@@ -1,31 +1,25 @@
-﻿using CarRentalService.Core.Domain.DataSeed;
-using CarRentalService.Core.Domain.Models;
+﻿using CarRentalService.Core.Domain.Models;
 using MongoDB.Driver;
 
-namespace CarRentalService.WebApplication;
-/// <summary>
-/// Seeder for populating the MongoDB database with initial test data.
-/// </summary>
+namespace CarRentalService.Core.Domain.DataSeed;
 
-public class DatabaseSeeder : IHostedService
+/// <summary>
+/// Database seeder
+/// </summary>
+/// <param name="dbClient">MongoDb client</param>
+public class DbSeeder(IMongoClient dbClient)
 {
-    private readonly IMongoClient _client;
-    private readonly IMongoDatabase _database;
+    private readonly IMongoDatabase _database = dbClient.GetDatabase("car-rental");
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DatabaseSeeder"/> class.
+    /// Seed database with test data
     /// </summary>
-    /// <param name="client"></param>
-    public DatabaseSeeder(IMongoClient client)
+    /// <param name="cancellationToken">cancellation token</param>
+    /// <returns>Task result</returns>
+    public async Task Seed(CancellationToken cancellationToken)
     {
-        _client = client;
-        _database = _client.GetDatabase("car-rental");
-    }
-
-    /// <inheritdoc/>
-    public async Task StartAsync(CancellationToken cancellationToken)
-    {
-        var collections = (await (await _database.ListCollectionsAsync(cancellationToken: cancellationToken)).ToListAsync(cancellationToken: cancellationToken)).Select(x => x["name"].AsString).ToHashSet();
+        var collections = (await (await _database.ListCollectionsAsync(cancellationToken: cancellationToken)).ToListAsync(cancellationToken: cancellationToken)).Select(x => x["name"].AsString)
+                                                                                                                                                               .ToHashSet();
 
         var generator = new DataSeeder();
         var (vehicleModels, modelGenerations, vehicles, customers, rentals) = generator.GenerateTestData();
@@ -59,10 +53,5 @@ public class DatabaseSeeder : IHostedService
             var rentalCollection = _database.GetCollection<Rental>("rentals");
             await rentalCollection.InsertManyAsync(rentals, cancellationToken: cancellationToken);
         }
-
     }
-
-    /// <inheritdoc/>
-    public Task StopAsync(CancellationToken cancellationToken) =>
-        Task.CompletedTask;
 }
