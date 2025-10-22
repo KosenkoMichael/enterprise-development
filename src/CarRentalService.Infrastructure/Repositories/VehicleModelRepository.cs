@@ -24,10 +24,10 @@ public class VehicleModelRepository(CarRentalDbContext dbContext) : IRepository<
     }
     /// <inheritdoc/>
     public async Task<List<VehicleModel>> ReadAllAsync() =>
-        await dbContext.VehicleModels.ToListAsync();
+        await dbContext.VehicleModels.AsNoTracking().ToListAsync();
     /// <inheritdoc/>
     public async Task<VehicleModel?> ReadAsync(Guid id) =>
-        await dbContext.VehicleModels.FirstOrDefaultAsync(x => x.Id == id);
+        await dbContext.VehicleModels.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
     /// <inheritdoc/>
     public async Task<VehicleModel?> UpdateAsync(Guid id, VehicleModel entity)
     {

@@ -32,9 +32,9 @@ public class RentalRepository(CarRentalDbContext dbContext) : IRepository<Rental
         var rentals = await dbContext.Rentals.ToListAsync();
         foreach (var rental in rentals)
         {
-            var vehicle = await dbContext.Vehicles.FirstOrDefaultAsync(x => x.Id == rental.VehicleId);
+            var vehicle = await dbContext.Vehicles.AsNoTracking().FirstOrDefaultAsync(x => x.Id == rental.VehicleId);
             if (vehicle is null) continue;
-            var modelGeneration = await dbContext.ModelGenerations.FirstOrDefaultAsync(x => x.Id == vehicle.ModelGenerationId);
+            var modelGeneration = await dbContext.ModelGenerations.AsNoTracking().FirstOrDefaultAsync(x => x.Id == vehicle.ModelGenerationId);
             if (modelGeneration is null) continue;
             rental.TotalCost = (decimal)rental.RentalDurationHours * modelGeneration.RentalPricePerHour;
         }
@@ -44,11 +44,11 @@ public class RentalRepository(CarRentalDbContext dbContext) : IRepository<Rental
     /// <inheritdoc/>
     public async Task<Rental?> ReadAsync(Guid id)
     {
-        var rental = await dbContext.Rentals.FirstOrDefaultAsync(x => x.Id == id);
+        var rental = await dbContext.Rentals.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         if (rental is null) return null;
-        var vehicle = await dbContext.Vehicles.FirstOrDefaultAsync(x => x.Id == rental.VehicleId);
+        var vehicle = await dbContext.Vehicles.AsNoTracking().FirstOrDefaultAsync(x => x.Id == rental.VehicleId);
         if (vehicle is null) return null;
-        var modelGeneration = await dbContext.ModelGenerations.FirstOrDefaultAsync(x => x.Id == vehicle.ModelGenerationId);
+        var modelGeneration = await dbContext.ModelGenerations.AsNoTracking().FirstOrDefaultAsync(x => x.Id == vehicle.ModelGenerationId);
         if (modelGeneration is null) return null;
         rental.TotalCost = (decimal)rental.RentalDurationHours * modelGeneration.RentalPricePerHour;
 

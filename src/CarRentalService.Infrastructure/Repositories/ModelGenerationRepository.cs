@@ -25,10 +25,10 @@ public class ModelGenerationRepository(CarRentalDbContext dbContext) : IReposito
     }
     /// <inheritdoc/>
     public async Task<List<ModelGeneration>> ReadAllAsync() =>
-        await dbContext.ModelGenerations.ToListAsync();
+        await dbContext.ModelGenerations.AsNoTracking().ToListAsync();
     /// <inheritdoc/>
     public async Task<ModelGeneration?> ReadAsync(Guid id) =>
-        await dbContext.ModelGenerations.FirstOrDefaultAsync(x => x.Id == id);
+        await dbContext.ModelGenerations.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
     /// <inheritdoc/>
     public async Task<ModelGeneration?> UpdateAsync(Guid id, ModelGeneration entity)
     {
