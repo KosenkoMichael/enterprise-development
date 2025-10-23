@@ -5,4 +5,4 @@
 /// </summary>
 /// <param name="Vehicle">Vehicle</param>
 /// <param name="RentalCount">Rental count</param>
-public record VehicleRentalCountDto(VehicleDto Vehicle, int RentalCount);
+public sealed record VehicleRentalCountDto(VehicleDto Vehicle, int RentalCount);

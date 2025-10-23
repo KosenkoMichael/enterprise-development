@@ -11,4 +11,4 @@ namespace CarRentalService.WebApplication.Dto;
 /// <param name="TransmissionType"> Transmission type (e.g., Automatic, Manual). </param>
 /// <param name="VehicleModelId"> Vehicle model Id </param>
 /// <param name="RentalPricePerHour"> Cost to rent the vehicle per hour. </param>
-public record ModelGenerationDto(Guid Id, int Year, double EngineVolume, TransmissionType TransmissionType, Guid VehicleModelId, decimal RentalPricePerHour);
+public sealed record ModelGenerationDto(Guid Id, int Year, double EngineVolume, TransmissionType TransmissionType, Guid VehicleModelId, decimal RentalPricePerHour);

@@ -5,4 +5,4 @@
 /// </summary>
 /// <param name="Customer">Customer</param>
 /// <param name="TotalSpent">Customer</param>
-public record CustomerTotalSpentDto(CustomerDto Customer, decimal TotalSpent);
+public sealed record CustomerTotalSpentDto(CustomerDto Customer, decimal TotalSpent);

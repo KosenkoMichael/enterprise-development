@@ -12,4 +12,4 @@ namespace CarRentalService.WebApplication.Dto;
 /// <param name="SeatCount"> Seat count of the vehicle. </param>
 /// <param name="BodyType"> Body type of the vehicle (e.g., "Sedan", "SUV"). </param>
 /// <param name="Class"> Vehicle class (e.g., "Economy", "Luxury"). </param>
-public record VehicleModelDto(Guid Id, string Name, DriveType DriveType, int SeatCount, BodyType BodyType, VehicleClass Class);
+public sealed record VehicleModelDto(Guid Id, string Name, DriveType DriveType, int SeatCount, BodyType BodyType, VehicleClass Class);
