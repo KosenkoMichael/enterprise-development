@@ -20,8 +20,11 @@ public class ModelGenerationRepository(CarRentalDbContext dbContext) : IReposito
     /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
-        var result = await dbContext.ModelGenerations.Where(x => x.Id == id).ExecuteDeleteAsync();
-        return result > 0;
+        var entity = await ReadAsync(id);
+        if (entity == null) return false;
+        var result = dbContext.ModelGenerations.Remove(entity);
+        await dbContext.SaveChangesAsync();
+        return true;
     }
     /// <inheritdoc/>
     public async Task<List<ModelGeneration>> ReadAllAsync() =>

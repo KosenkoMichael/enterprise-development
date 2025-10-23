@@ -20,8 +20,11 @@ public class VehicleRepository(CarRentalDbContext dbContext) : IRepository<Vehic
     /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
-        var result = await dbContext.Vehicles.Where(x => x.Id == id).ExecuteDeleteAsync();
-        return result > 0;
+        var entity = await ReadAsync(id);
+        if (entity == null) return false;
+        var result = dbContext.Vehicles.Remove(entity);
+        await dbContext.SaveChangesAsync();
+        return true;
     }
     /// <inheritdoc/>
     public async Task<List<Vehicle>> ReadAllAsync() =>
