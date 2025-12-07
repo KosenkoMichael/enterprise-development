@@ -4,7 +4,7 @@ using CarRentalService.Core.Domain.Repository;
 using CarRentalService.Core.Domain.Service;
 using CarRentalService.Infrastructure;
 using CarRentalService.Infrastructure.Nats.Consumers;
-using CarRentalService.Infrastructure.Nats.Deserializers;
+using CarRentalService.Infrastructure.Nats.Serializing;
 using CarRentalService.Infrastructure.Repositories;
 using CarRentalService.WebApplication;
 using CarRentalService.WebApplication.Services;
