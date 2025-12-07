@@ -1,8 +1,8 @@
-﻿using CarRentalService.Core.Domain.Models;
-using CarRentalService.WebApplication.Dto;
+﻿using CarRentalService.Core.Contracts.Dto;
+using CarRentalService.Core.Domain.Models;
 
-namespace CarRentalService.WebApplication.Mappers;
-internal static class CarRentalMapper
+namespace CarRentalService.Core.Contracts.Mappers;
+public static class CarRentalMapper
 {
     public static CustomerDto ToDto(this Customer customer) => new(customer.Id, customer.DriverLicenseNumber,
                                                                     customer.FullName, customer.DateOfBirth);

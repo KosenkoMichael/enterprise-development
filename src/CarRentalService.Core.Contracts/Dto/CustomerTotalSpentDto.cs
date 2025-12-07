@@ -1,4 +1,4 @@
-﻿namespace CarRentalService.WebApplication.Dto;
+﻿namespace CarRentalService.Core.Contracts.Dto;
 
 /// <summary>
 /// Dto for top N customers

@@ -1,7 +1,7 @@
 ﻿using CarRentalService.Core.Domain.Models;
 using DriveType = CarRentalService.Core.Domain.Models.DriveType;
 
-namespace CarRentalService.WebApplication.Dto;
+namespace CarRentalService.Core.Contracts.Dto;
 
 /// <summary>
 /// Vehicle model request

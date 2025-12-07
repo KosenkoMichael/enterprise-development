@@ -3,6 +3,8 @@ using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
 using CarRentalService.Core.Domain.Service;
 using CarRentalService.Infrastructure;
+using CarRentalService.Infrastructure.Nats.Consumers;
+using CarRentalService.Infrastructure.Nats.Deserializers;
 using CarRentalService.Infrastructure.Repositories;
 using CarRentalService.WebApplication;
 using CarRentalService.WebApplication.Services;
@@ -53,6 +55,16 @@ builder.Services.AddDbContext<CarRentalDbContext>((services, o) =>
 
 builder.Services.AddSingleton<DbSeeder>();
 builder.Services.AddHostedService<DbSeedService>();
+
+builder.AddNatsClient("car-rental-nats", (sp, opts) =>
+{
+    opts = opts with
+    {
+        SerializerRegistry = new CarRentalSerializerRegistry()
+    };
+    return opts;
+});
+builder.Services.AddHostedService<CustomerNatsConsumer>();
 
 builder.Services.AddScoped<IRepository<Customer>, CustomerRepository>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();

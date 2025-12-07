@@ -1,6 +1,6 @@
-﻿using CarRentalService.Core.Domain.Service;
-using CarRentalService.WebApplication.Dto;
-using CarRentalService.WebApplication.Mappers;
+﻿using CarRentalService.Core.Contracts.Dto;
+using CarRentalService.Core.Domain.Service;
+using CarRentalService.Core.Contracts.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarRentalService.WebApplication.Controllers;

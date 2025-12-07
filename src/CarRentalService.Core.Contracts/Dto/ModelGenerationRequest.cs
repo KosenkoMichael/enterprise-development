@@ -1,6 +1,6 @@
 ﻿using CarRentalService.Core.Domain.Models;
 
-namespace CarRentalService.WebApplication.Dto;
+namespace CarRentalService.Core.Contracts.Dto;
 
 /// <summary>
 /// Model generation request

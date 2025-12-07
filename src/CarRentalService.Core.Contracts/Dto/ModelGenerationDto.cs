@@ -1,6 +1,6 @@
 ﻿using CarRentalService.Core.Domain.Models;
 
-namespace CarRentalService.WebApplication.Dto;
+namespace CarRentalService.Core.Contracts.Dto;
 
 /// <summary>
 /// Represents a specific generation of a vehicle model in the car rental system.
