@@ -9,7 +9,7 @@ using NATS.Client.JetStream.Models;
 using NATS.Net;
 
 namespace CarRentalService.Infrastructure.Nats.Consumers;
-public class CustomerNatsConsumer(INatsConnection connection, IServiceScopeFactory scopeFactory, IConfiguration configuration) : BackgroundService
+public class ModelGenerationNatsConsumer(INatsConnection connection, IServiceScopeFactory scopeFactory, IConfiguration configuration) : BackgroundService
 {
     private readonly string _streamName = configuration.GetSection("Nats")["StreamName"] ?? throw new KeyNotFoundException("StreamName section of Nats is missing");
     private readonly string _subjectName = configuration.GetSection("Nats")["SubjectName"] ?? throw new KeyNotFoundException("SubjectName section of Nats is missing");
@@ -23,20 +23,20 @@ public class CustomerNatsConsumer(INatsConnection connection, IServiceScopeFacto
             var consumer = await context.CreateConsumerAsync(_streamName,
                 new ConsumerConfig
                 {
-                    FilterSubjects = ["car-rental.customers.*"],
+                    FilterSubjects = ["car-rental.modelgenerations.*"],
                     AckPolicy = ConsumerConfigAckPolicy.Explicit
                 },
                 stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                await foreach (var message in consumer.ConsumeAsync<List<CustomerRequest>>(cancellationToken: stoppingToken))
+                await foreach (var message in consumer.ConsumeAsync<List<ModelGenerationRequest>>(cancellationToken: stoppingToken))
                 {
                     if (message.Data is null) continue;
                     using var scope = scopeFactory.CreateScope();
-                    var customerService = scope.ServiceProvider.GetRequiredService<ICustomerService>();
-                    foreach (var customerRequest in message.Data)
-                        await customerService.CreateCustomerAsync(customerRequest.ToDomain());
+                    var modelGenerationService = scope.ServiceProvider.GetRequiredService<IModelGenerationService>();
+                    foreach (var modelGenerationRequest in message.Data)
+                        await modelGenerationService.CreateModelGenerationAsync(modelGenerationRequest.ToDomain());
                     await message.AckAsync();
                 }
             }

@@ -1,5 +1,4 @@
-﻿using CarRentalService.Core.Contracts.Dto;
-using NATS.Client.Core;
+﻿using NATS.Client.Core;
 using System.Buffers;
 using System.Text.Json;
 

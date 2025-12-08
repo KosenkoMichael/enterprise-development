@@ -1,7 +1,3 @@
-using Aspire.Hosting;
-using Aspire.Hosting.ApplicationModel;
-using Microsoft.Extensions.Hosting;
-
 var builder = DistributedApplication.CreateBuilder(args);
 
 var batchSize = builder.AddParameter("GeneratorBatchSize");

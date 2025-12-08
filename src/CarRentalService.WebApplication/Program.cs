@@ -65,6 +65,7 @@ builder.AddNatsClient("car-rental-nats", (sp, opts) =>
     return opts;
 });
 builder.Services.AddHostedService<CustomerNatsConsumer>();
+builder.Services.AddHostedService<ModelGenerationNatsConsumer>();
 
 builder.Services.AddScoped<IRepository<Customer>, CustomerRepository>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();

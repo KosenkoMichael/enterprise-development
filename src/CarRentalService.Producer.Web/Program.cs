@@ -1,11 +1,13 @@
+using Bogus;
 using CarRentalService.Core.Contracts.Dto;
+using CarRentalService.Core.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using NATS.Client.Core;
 using NATS.Client.JetStream;
 using NATS.Client.JetStream.Models;
 using System.Text.Json;
-using Bogus;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,16 @@ builder.Services.AddSingleton<INatsJSContext>(sp =>
 {
     var conn = sp.GetRequiredService<INatsConnection>();
     return new NatsJSContext(conn);
+});
+builder.Services.AddHttpClient("CarRentalApi", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7010");
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+builder.Services.Configure<JsonSerializerOptions>(options =>
+{
+    options.PropertyNameCaseInsensitive = true;
+    options.Converters.Add(new JsonStringEnumConverter());
 });
 builder.Services.AddHostedService<JetStreamBootstrapper>();
 
@@ -33,17 +45,18 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAntiforgery();
 
-MapConsumers(app);
+MapCustomers(app);
+MapModelGenerations(app);
 
 app.Run();
 
-static void MapConsumers(WebApplication app)
+static void MapCustomers(WebApplication app)
 {
     var customerFaker = new Faker<CustomerRequest>()
         .CustomInstantiator(f => new CustomerRequest(
-            $"{f.Random.Number(1, 99):00}{f.Random.String2(2)}{f.Random.Number(100000, 999999):000000}",
-            $"{f.Name.LastName()} {f.Name.FirstName()}",
-            f.Date.Between(DateTime.Now.AddYears(-60), DateTime.Now.AddYears(-18))
+            DriverLicenseNumber: $"{f.Random.Number(1, 99):00}{f.Random.String2(2)}{f.Random.Number(100000, 999999):000000}",
+            FullName: $"{f.Name.LastName()} {f.Name.FirstName()}",
+            DateOfBirth: f.Date.Between(DateTime.Now.AddYears(-60), DateTime.Now.AddYears(-18))
         ));
 
     app.MapPost("/customers", async ([FromForm] int count, INatsJSContext context) =>
@@ -52,6 +65,45 @@ static void MapConsumers(WebApplication app)
         {
             var testCustomers = customerFaker.Generate(count);
             await context.PublishAsync("car-rental.customers.create", JsonSerializer.SerializeToUtf8Bytes(testCustomers));
+            return Results.Accepted();
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error sending message: {ex.Message}");
+        }
+    }).DisableAntiforgery();
+}
+
+static void MapModelGenerations(WebApplication app)
+{
+    app.MapPost("/modelgenerations", async ([FromForm] int count, INatsJSContext context, IHttpClientFactory httpClientFactory, IOptions<JsonSerializerOptions> jsonOptions) =>
+    {
+        try
+        {
+            var httpClient = httpClientFactory.CreateClient("CarRentalApi");
+            var response = await httpClient.GetFromJsonAsync<VehicleModelCollectionResponse>(
+                "/api/vehiclemodels",
+                jsonOptions.Value
+            );
+            if (response == null)
+                return Results.Problem(
+                    detail: "Vehicle model list is empty",
+                    statusCode: StatusCodes.Status500InternalServerError
+                );
+            var existingVehicleModelIds = response.VehicleModels
+                .Select(vm => vm.Id)
+                .ToList();
+            var modelGenerationFaker = new Faker<ModelGenerationRequest>()
+            .CustomInstantiator(f => new ModelGenerationRequest(
+                Year: f.Random.Int(2000, 2025),
+                EngineVolume: Math.Round(f.Random.Double(1.0, 5.0), 1),
+                TransmissionType: f.PickRandom<TransmissionType>(),
+                VehicleModelId: f.PickRandom(existingVehicleModelIds),
+                RentalPricePerHour: f.Random.Decimal(10, 500)
+            ));
+
+            var testModelGenerations = modelGenerationFaker.Generate(count);
+            await context.PublishAsync("car-rental.modelgenerations.create", JsonSerializer.SerializeToUtf8Bytes(testModelGenerations));
             return Results.Accepted();
         }
         catch (Exception ex)

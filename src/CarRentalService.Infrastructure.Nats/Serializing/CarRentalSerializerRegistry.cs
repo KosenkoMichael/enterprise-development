@@ -1,5 +1,4 @@
-﻿using CarRentalService.Infrastructure.Nats.Serializing;
-using NATS.Client.Core;
+﻿using NATS.Client.Core;
 
 namespace CarRentalService.Infrastructure.Nats.Serializing;
 
