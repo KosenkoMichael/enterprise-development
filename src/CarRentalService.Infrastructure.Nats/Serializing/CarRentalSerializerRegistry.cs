@@ -2,6 +2,10 @@
 
 namespace CarRentalService.Infrastructure.Nats.Serializing;
 
+/// <summary>
+/// Json serializer registry
+/// </summary>
+/// <typeparam name="T">param</typeparam>
 public class CarRentalSerializerRegistry : INatsSerializerRegistry
 {
     public INatsSerialize<T> GetSerializer<T>() => new CarRentalPayloadSerializer<T>();

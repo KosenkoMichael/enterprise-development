@@ -4,15 +4,22 @@ using CarRentalService.Core.Domain.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NATS.Client.Core;
 using NATS.Client.JetStream.Models;
 using NATS.Net;
 
 namespace CarRentalService.Infrastructure.Nats.Consumers;
-public class ModelGenerationNatsConsumer(INatsConnection connection, IServiceScopeFactory scopeFactory, IConfiguration configuration) : BackgroundService
+
+/// <summary>
+/// Nats consumer for model generations
+/// </summary>
+/// <param name="connection">nats connection</param>
+/// <param name="scopeFactory">service scope factory</param>
+/// <param name="configuration">configuration</param>
+public class ModelGenerationNatsConsumer(INatsConnection connection, IServiceScopeFactory scopeFactory, IConfiguration configuration, ILogger<ModelGenerationNatsConsumer> logger) : BackgroundService
 {
     private readonly string _streamName = configuration.GetSection("Nats")["StreamName"] ?? throw new KeyNotFoundException("StreamName section of Nats is missing");
-    private readonly string _subjectName = configuration.GetSection("Nats")["SubjectName"] ?? throw new KeyNotFoundException("SubjectName section of Nats is missing");
     /// <inheritdoc/>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -38,12 +45,13 @@ public class ModelGenerationNatsConsumer(INatsConnection connection, IServiceSco
                     foreach (var modelGenerationRequest in message.Data)
                         await modelGenerationService.CreateModelGenerationAsync(modelGenerationRequest.ToDomain());
                     await message.AckAsync();
+                    logger.LogInformation("ModelGenerationRequest is resieved");
                 }
             }
         }
         catch (Exception ex)
         {
-
+            logger.LogError(ex, "Error when recieving ModelGenerationRequest");
         }
 
     }

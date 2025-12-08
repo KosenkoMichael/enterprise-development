@@ -12,12 +12,12 @@ using NATS.Net;
 namespace CarRentalService.Infrastructure.Nats.Consumers;
 
 /// <summary>
-/// Nats consumer for customers
+/// Nats consumer for vehicle models
 /// </summary>
 /// <param name="connection">nats connection</param>
 /// <param name="scopeFactory">service scope factory</param>
 /// <param name="configuration">configuration</param>
-public class CustomerNatsConsumer(INatsConnection connection, IServiceScopeFactory scopeFactory, IConfiguration configuration, ILogger<CustomerNatsConsumer> logger) : BackgroundService
+public class VehicleModelNatsConsumer(INatsConnection connection, IServiceScopeFactory scopeFactory, IConfiguration configuration, ILogger<VehicleModelNatsConsumer> logger) : BackgroundService
 {
     private readonly string _streamName = configuration.GetSection("Nats")["StreamName"] ?? throw new KeyNotFoundException("StreamName section of Nats is missing");
     /// <inheritdoc/>
@@ -30,28 +30,28 @@ public class CustomerNatsConsumer(INatsConnection connection, IServiceScopeFacto
             var consumer = await context.CreateConsumerAsync(_streamName,
                 new ConsumerConfig
                 {
-                    FilterSubjects = ["car-rental.customers.*"],
+                    FilterSubjects = ["car-rental.vehiclemodels.*"],
                     AckPolicy = ConsumerConfigAckPolicy.Explicit
                 },
                 stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                await foreach (var message in consumer.ConsumeAsync<List<CustomerRequest>>(cancellationToken: stoppingToken))
+                await foreach (var message in consumer.ConsumeAsync<List<VehicleModelRequest>>(cancellationToken: stoppingToken))
                 {
                     if (message.Data is null) continue;
                     using var scope = scopeFactory.CreateScope();
-                    var customerService = scope.ServiceProvider.GetRequiredService<ICustomerService>();
-                    foreach (var customerRequest in message.Data)
-                        await customerService.CreateCustomerAsync(customerRequest.ToDomain());
+                    var vehicleModelService = scope.ServiceProvider.GetRequiredService<IVehicleModelService>();
+                    foreach (var vehicleModelRequest in message.Data)
+                        await vehicleModelService.CreateVehicleModel(vehicleModelRequest.ToDomain());
                     await message.AckAsync();
-                    logger.LogInformation("CustomerRequest is resieved");
+                    logger.LogInformation("VehicleModelRequest is resieved");
                 }
             }
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error when recieving CustomerRequest");
+            logger.LogError(ex, "Error when recieving VehicleModelRequest");
         }
 
     }

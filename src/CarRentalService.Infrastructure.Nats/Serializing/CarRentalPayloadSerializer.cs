@@ -4,6 +4,10 @@ using System.Text.Json;
 
 namespace CarRentalService.Infrastructure.Nats.Serializing;
 
+/// <summary>
+/// Json serializer
+/// </summary>
+/// <typeparam name="T">param</typeparam>
 internal class CarRentalPayloadSerializer<T> : INatsSerialize<T>
 {
     public void Serialize(IBufferWriter<byte> buffer, T value) =>
