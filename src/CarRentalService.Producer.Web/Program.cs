@@ -47,6 +47,7 @@ app.UseAntiforgery();
 
 MapCustomers(app);
 MapModelGenerations(app);
+MapRental(app);
 
 app.Run();
 
@@ -104,6 +105,56 @@ static void MapModelGenerations(WebApplication app)
 
             var testModelGenerations = modelGenerationFaker.Generate(count);
             await context.PublishAsync("car-rental.modelgenerations.create", JsonSerializer.SerializeToUtf8Bytes(testModelGenerations));
+            return Results.Accepted();
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem($"Error sending message: {ex.Message}");
+        }
+    }).DisableAntiforgery();
+}
+
+static void MapRental(WebApplication app)
+{
+    app.MapPost("/rentals", async ([FromForm] int count, INatsJSContext context, IHttpClientFactory httpClientFactory, IOptions<JsonSerializerOptions> jsonOptions) =>
+    {
+        try
+        {
+            var httpClient = httpClientFactory.CreateClient("CarRentalApi");
+            var customerResponse = await httpClient.GetFromJsonAsync<CustomerCollectionResponse>(
+                "/api/customers",
+                jsonOptions.Value
+            );
+            var vehicleResponse = await httpClient.GetFromJsonAsync<VehicleCollectionResponse>(
+                "/api/vehicles",
+                jsonOptions.Value
+            );
+            if (customerResponse == null)
+                return Results.Problem(
+                    detail: "Customer list is empty",
+                    statusCode: StatusCodes.Status500InternalServerError
+                );
+            if (vehicleResponse == null)
+                return Results.Problem(
+                    detail: "Vehicle list is empty",
+                    statusCode: StatusCodes.Status500InternalServerError
+                );
+            var existingVehicleIds = vehicleResponse.Vehicles
+                .Select(vm => vm.Id)
+                .ToList();
+            var existingCustomerIds = customerResponse.Customers
+                .Select(vm => vm.Id)
+                .ToList();
+            var rentalFaker = new Faker<RentalRequest>()
+            .CustomInstantiator(f => new RentalRequest(
+                VehicleId: f.PickRandom(existingVehicleIds),
+                CustomerId: f.PickRandom(existingCustomerIds),
+                RentStartTime: f.Date.Past(60),
+                RentalDurationHours: Math.Round(f.Random.Double(0.5, 12.0) * 2) / 2
+            ));
+
+            var testRental = rentalFaker.Generate(count);
+            await context.PublishAsync("car-rental.rentals.create", JsonSerializer.SerializeToUtf8Bytes(testRental));
             return Results.Accepted();
         }
         catch (Exception ex)
