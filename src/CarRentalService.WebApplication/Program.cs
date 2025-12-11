@@ -1,9 +1,10 @@
+using CarRentalService.Core.Contracts.Dto;
+using CarRentalService.Core.Contracts.Mappers;
 using CarRentalService.Core.Domain.DataSeed;
 using CarRentalService.Core.Domain.Models;
 using CarRentalService.Core.Domain.Repository;
 using CarRentalService.Core.Domain.Service;
 using CarRentalService.Infrastructure;
-using CarRentalService.Infrastructure.Nats.Consumers;
 using CarRentalService.Infrastructure.Nats.Serializing;
 using CarRentalService.Infrastructure.Repositories;
 using CarRentalService.WebApplication;
@@ -13,10 +14,13 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using NATS.Client.Core;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
 
 builder.Services.AddLogging(logging =>
 {
@@ -64,11 +68,85 @@ builder.AddNatsClient("car-rental-nats", (sp, opts) =>
     };
     return opts;
 });
-builder.Services.AddHostedService<CustomerNatsConsumer>();
-builder.Services.AddHostedService<ModelGenerationNatsConsumer>();
-builder.Services.AddHostedService<RentalNatsConsumer>();
-builder.Services.AddHostedService<VehicleNatsConsumer>();
-builder.Services.AddHostedService<VehicleModelNatsConsumer>();
+builder.Services.AddHostedService(provider =>
+{
+    var connection = provider.GetRequiredService<INatsConnection>();
+    var scopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
+    var logger = provider.GetRequiredService<ILogger<NatsGenericConsumer<CustomerRequest, ICustomerService>>>();
+    var streamName = builder.Configuration.GetSection("Nats")["StreamName"]!;
+    return new NatsGenericConsumer<CustomerRequest, ICustomerService>(
+        connection,
+        scopeFactory,
+        "car-rental.customers.*",
+        async (service, customer) => await service.CreateCustomerAsync(customer.ToDomain()),
+        logger,
+        streamName
+    );
+});
+
+builder.Services.AddHostedService(provider =>
+{
+    var connection = provider.GetRequiredService<INatsConnection>();
+    var scopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
+    var logger = provider.GetRequiredService<ILogger<NatsGenericConsumer<VehicleModelRequest, IVehicleModelService>>>();
+    var streamName = builder.Configuration.GetSection("Nats")["StreamName"]!;
+    return new NatsGenericConsumer<VehicleModelRequest, IVehicleModelService>(
+        connection,
+        scopeFactory,
+        "car-rental.vehiclemodels.*",
+        async (service, model) => await service.CreateVehicleModel(model.ToDomain()),
+        logger,
+        streamName
+    );
+});
+
+builder.Services.AddHostedService(provider =>
+{
+    var connection = provider.GetRequiredService<INatsConnection>();
+    var scopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
+    var logger = provider.GetRequiredService<ILogger<NatsGenericConsumer<ModelGenerationRequest, IModelGenerationService>>>();
+    var streamName = builder.Configuration.GetSection("Nats")["StreamName"]!;
+    return new NatsGenericConsumer<ModelGenerationRequest, IModelGenerationService>(
+        connection,
+        scopeFactory,
+        "car-rental.modelgenerations.*",
+        async (service, modelGen) => await service.CreateModelGenerationAsync(modelGen.ToDomain()),
+        logger,
+        streamName
+    );
+});
+
+builder.Services.AddHostedService(provider =>
+{
+    var connection = provider.GetRequiredService<INatsConnection>();
+    var scopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
+    var logger = provider.GetRequiredService<ILogger<NatsGenericConsumer<VehicleRequest, IVehicleService>>>();
+    var streamName = builder.Configuration.GetSection("Nats")["StreamName"]!;
+    return new NatsGenericConsumer<VehicleRequest, IVehicleService>(
+        connection,
+        scopeFactory,
+        "car-rental.vehicles.*",
+        async (service, vehicle) => await service.CreateVehicleAsync(vehicle.ToDomain()),
+        logger,
+        streamName
+    );
+});
+
+builder.Services.AddHostedService(provider =>
+{
+    var connection = provider.GetRequiredService<INatsConnection>();
+    var scopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
+    var logger = provider.GetRequiredService<ILogger<NatsGenericConsumer<RentalRequest, IRentalService>>>();
+    var streamName = builder.Configuration.GetSection("Nats")["StreamName"]!;
+    return new NatsGenericConsumer<RentalRequest, IRentalService>(
+        connection,
+        scopeFactory,
+        "car-rental.rentals.*",
+        async (service, rental) => await service.CreateRentalAsync(rental.ToDomain()),
+        logger,
+        streamName
+    );
+});
 
 builder.Services.AddScoped<IRepository<Customer>, CustomerRepository>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();

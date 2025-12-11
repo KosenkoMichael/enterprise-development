@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CarRentalService.Aspire\CarRentalService.Aspire.ServiceDefaults\CarRentalService.Aspire.ServiceDefaults.csproj" />
     <ProjectReference Include="..\CarRentalService.Core.Contracts\CarRentalService.Core.Contracts.csproj" />
     <ProjectReference Include="..\CarRentalService.Infrastructure.Nats\CarRentalService.Infrastructure.Nats.csproj" />
     <ProjectReference Include="..\CarRentalService.Infrastructure\CarRentalService.Infrastructure.csproj" />
